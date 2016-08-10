@@ -1,7 +1,7 @@
 import sys, os, pygame
 from pygame.locals import *
 from constants import *
-from utilities import mainMenu, terminate
+from utilities import mainMenu, terminate, convertMap
 
 def main():
 
@@ -15,6 +15,10 @@ def main():
     pygame.display.set_caption('PyRPG')
     
     mainMenu()
+    currentMapFile = open("maps/start.map","r")
+    currentMap = convertMap(currentMapFile)
+    currentMapFile.close()
+    print currentMap
     #write char first time
     imageToDraw = charImgs['up']
     DISPLAYSURF.blit(imageToDraw, (CENTERX, CENTERY))
@@ -24,7 +28,6 @@ def main():
         redrawChar = False
         for event in pygame.event.get(): # event handling loop
             if event.type == QUIT:
-                # Player clicked the "X" at the corner of the window.
                 terminate()
             elif event.type == KEYDOWN:
                 # Handle key presses

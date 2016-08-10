@@ -12,7 +12,7 @@ def mainMenu():
 
     #  Subtitle variables
     fontObjSubitle = pygame.font.Font('freesansbold.ttf', 18)
-    textSurfaceObjSubtitle = fontObjSubitle.render('Press Space to Start, H for help', True, BLUE, WHITE)
+    textSurfaceObjSubtitle = fontObjSubitle.render('Press Space to Start, H for help, ESC to exit the game', True, BLUE, WHITE)
     textRectObjSubtitle = textSurfaceObjSubtitle.get_rect()
     textRectObjSubtitle.center = (CENTERX, 120)
 
@@ -29,6 +29,8 @@ def mainMenu():
                     return
                 elif event.key == K_h:
                     helpMenu()
+                elif event.key == K_ESCAPE:
+                    terminate()
                 if not menuAppeared:
                     menuAppeared = True
 
@@ -37,7 +39,7 @@ def mainMenu():
 
 def helpMenu():
     fontObjHelp = pygame.font.Font('freesansbold.ttf', 18)
-    textSurfaceObjHelp = fontObjHelp.render('Press esc to go back in main menu', True, BLACK, WHITE)
+    textSurfaceObjHelp = fontObjHelp.render('Press esc to go back in main menu,', True, BLACK, WHITE)
     textRectObjHelp = textSurfaceObjHelp.get_rect()
     textRectObjHelp.x = 10
     textRectObjHelp.y = 10 
@@ -53,6 +55,12 @@ def helpMenu():
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)		
+
+def convertMap(filename):
+    text = filename.read()
+    for char in text:
+        
+    return text
 
 def terminate():
 	pygame.quit()
