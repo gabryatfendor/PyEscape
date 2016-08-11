@@ -56,12 +56,65 @@ def helpMenu():
         pygame.display.update()
         FPSCLOCK.tick(FPS)		
 
-def convertMap(filename):
-    text = filename.read()
-    for char in text:
-        
-    return text
+def convertMap(filepath):
+    with open(filepath, "r") as ins:
+        lineArray = []
+        for line in ins:
+            lineArray.append(line)
+    return zip(*lineArray)
 
+def convertMapToTile(mapArray):
+    tileArray = []
+    for column in mapArray:
+        for char in column:
+            if char == ' ':
+                tileArray.append(tiles['grass'])
+            elif char == 'W':
+                tileArray.append(tiles['water'])
+            elif char == 'T':
+                tileArray.append(tiles['tree'])
+            elif char == '#':
+                tileArray.append(tiles['wall'])
+        tileArray.append('\n')
+
+    return tileArray
+
+def drawMap(tileArray):
+    x = OFFSETX
+    y = OFFSETY
+    for tile in tileArray:
+        if tile == '\n':
+            x += TILESIDE
+            y = OFFSETY
+        else:
+            DISPLAYSURF.blit(tile, (x, y))
+            y += TILESIDE
+
+def setPlayerStartingPoint(mapArray):
+    playerPos = []
+    for i,column in enumerate(mapArray):
+        for j,char in enumerate(column):
+            if char == ' ':
+                playerPos.append(i)
+                playerPos.append(j)
+                return playerPos
+
+    return playerPos
+
+def createWalkabilityMap(mapArray):
+    mapToReturn = []
+    columnToAppend = []
+    print mapArray
+    for column in mapArray:
+        for char in column:
+            if char == ' ':
+                columnToAppend.append(True)
+            else:
+                columnToAppend.append(False)
+        mapToReturn.append(columnToAppend)
+        columnToAppend = []
+    return mapToReturn
+                
 def terminate():
 	pygame.quit()
 	sys.exit()

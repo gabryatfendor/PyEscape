@@ -6,6 +6,12 @@ WINWIDTH = 800  # width of the program's window, in pixels
 WINHEIGHT = 600  # height in pixels
 CENTERX = WINWIDTH/2
 CENTERY = WINHEIGHT/2
+OFFSETX = 20
+OFFSETY = 20
+
+TILESIDE = 50
+
+TESTING = False
 
 FPSCLOCK = pygame.time.Clock()
 DISPLAYSURF = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
@@ -21,3 +27,8 @@ charImgs = {'left': pygame.image.load('imgs/left.png'),
             'right': pygame.image.load('imgs/right.png'),
             'up': pygame.image.load('imgs/up.png'),
             'down': pygame.image.load('imgs/down.png')}
+
+tiles = {'grass': pygame.image.load('tiles/grass.png'),
+         'water': pygame.image.load('tiles/water.png'),
+         'tree': pygame.image.load('tiles/tree.png'),
+         'wall': pygame.image.load('tiles/wall.png')}

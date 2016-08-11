@@ -1,7 +1,8 @@
 import sys, os, pygame
 from pygame.locals import *
 from constants import *
-from utilities import mainMenu, terminate, convertMap
+from utilities import *
+from test import *
 
 def main():
 
@@ -15,39 +16,48 @@ def main():
     pygame.display.set_caption('PyRPG')
     
     mainMenu()
-    currentMapFile = open("maps/start.map","r")
-    currentMap = convertMap(currentMapFile)
-    currentMapFile.close()
-    print currentMap
+
+    arrayMap = convertMap("maps/start.map")
+    walkabilityMap = createWalkabilityMap(arrayMap)
+    if TESTING:
+        compareWalkabilityMap(arrayMap, walkabilityMap)
+    tileMap = convertMapToTile(arrayMap)
+    playerCoordinate = setPlayerStartingPoint(arrayMap)
+    xToDraw = (TILESIDE * playerCoordinate[0]) + OFFSETX
+    yToDraw = (TILESIDE * playerCoordinate[1]) + OFFSETY
     #write char first time
-    imageToDraw = charImgs['up']
-    DISPLAYSURF.blit(imageToDraw, (CENTERX, CENTERY))
+    charToDraw = charImgs['up']
+    DISPLAYSURF.blit(charToDraw, (CENTERX, CENTERY))
     while True:
-        playerMove = None
-        keyPressed = False
-        redrawChar = False
         for event in pygame.event.get(): # event handling loop
             if event.type == QUIT:
                 terminate()
             elif event.type == KEYDOWN:
                 # Handle key presses
-                keyPressed = True
                 if event.key == K_LEFT:
-                    imageToDraw = charImgs['left']
-                    redrawChar = True
+                    if(walkabilityMap[playerCoordinate[0]-1][playerCoordinate[1]]):
+                        charToDraw = charImgs['left']
+                        xToDraw -= TILESIDE
+                        playerCoordinate[0]-=1
                 elif event.key == K_RIGHT:
-                    imageToDraw = charImgs['right']
-                    redrawChar = True
+                    if(walkabilityMap[playerCoordinate[0]+1][playerCoordinate[1]]):
+                        charToDraw = charImgs['right']
+                        xToDraw += TILESIDE
+                        playerCoordinate[0]+=1
                 elif event.key == K_UP:
-                    imageToDraw = charImgs['up']
-                    redrawChar = True
+                    if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]-1]):
+                        charToDraw = charImgs['up']
+                        yToDraw -= TILESIDE
+                        playerCoordinate[1]-=1
                 elif event.key == K_DOWN:
-                    imageToDraw = charImgs['down']
-                    redrawChar = True
+                    if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]+1]):
+                        charToDraw = charImgs['down']
+                        yToDraw += TILESIDE
+                        playerCoordinate[1]+=1
                 elif event.key == K_ESCAPE:
                     terminate()
-        if redrawChar == True:
-            DISPLAYSURF.blit(imageToDraw, (CENTERX, CENTERY))
+        drawMap(tileMap)
+        DISPLAYSURF.blit(charToDraw, (xToDraw, yToDraw))
         pygame.display.update() # draw DISPLAYSURF to the screen.
         FPSCLOCK.tick()
 
