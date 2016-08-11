@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 FPS = 60  # frames per second to update the screen
-WINWIDTH = 800  # width of the program's window, in pixels
+WINWIDTH = 1500  # width of the program's window, in pixels
 WINHEIGHT = 600  # height in pixels
 CENTERX = WINWIDTH/2
 CENTERY = WINHEIGHT/2
@@ -31,4 +31,5 @@ charImgs = {'left': pygame.image.load('imgs/left.png'),
 tiles = {'grass': pygame.image.load('tiles/grass.png'),
          'water': pygame.image.load('tiles/water.png'),
          'tree': pygame.image.load('tiles/tree.png'),
-         'wall': pygame.image.load('tiles/wall.png')}
+         'wall': pygame.image.load('tiles/wall.png'),
+         'outside': pygame.image.load('tiles/outside.png')}

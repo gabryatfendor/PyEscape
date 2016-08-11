@@ -57,11 +57,15 @@ def helpMenu():
         FPSCLOCK.tick(FPS)		
 
 def convertMap(filepath):
+    arrayToReturn = []
     with open(filepath, "r") as ins:
         lineArray = []
         for line in ins:
             lineArray.append(line)
-    return zip(*lineArray)
+
+    for line in lineArray:
+        arrayToReturn.append(line[:-1])
+    return zip(*arrayToReturn)
 
 def convertMapToTile(mapArray):
     tileArray = []
@@ -75,6 +79,8 @@ def convertMapToTile(mapArray):
                 tileArray.append(tiles['tree'])
             elif char == '#':
                 tileArray.append(tiles['wall'])
+            elif char == '-':
+                tileArray.append(tiles['outside'])
         tileArray.append('\n')
 
     return tileArray
@@ -92,7 +98,7 @@ def drawMap(tileArray):
 
 def setPlayerStartingPoint(mapArray):
     playerPos = []
-    for i,column in enumerate(mapArray):
+    for i,column in enumerate(zip(*mapArray)):
         for j,char in enumerate(column):
             if char == ' ':
                 playerPos.append(i)
@@ -104,7 +110,6 @@ def setPlayerStartingPoint(mapArray):
 def createWalkabilityMap(mapArray):
     mapToReturn = []
     columnToAppend = []
-    print mapArray
     for column in mapArray:
         for char in column:
             if char == ' ':
