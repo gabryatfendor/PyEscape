@@ -18,18 +18,17 @@ def main():
     mainMenu()
 
     arrayMap = convertMap("maps/start.map")
+    mapDimension = [len(arrayMap[0]),len(arrayMap)]
+    print "Map loaded, dimension %r" % mapDimension
     playerCoordinate = setPlayerStartingPoint("maps/start.map")
     walkabilityMap = createWalkabilityMap(arrayMap)
-    if TESTING:
-        compareWalkabilityMap(arrayMap, walkabilityMap)
     tileMap = convertMapToTile(arrayMap)
-    xToDraw = (TILESIDE * playerCoordinate[0]) + OFFSETX
-    yToDraw = (TILESIDE * playerCoordinate[1]) + OFFSETY
+    
     #write char first time
-    charToDraw = charImgs['up']
-    DISPLAYSURF.blit(charToDraw, (CENTERX, CENTERY))
+    charToDraw = charImgs['down']
     while True:
         for event in pygame.event.get(): # event handling loop
+            DISPLAYSURF.fill(WHITE)
             if event.type == QUIT:
                 terminate()
             elif event.type == KEYDOWN:
@@ -37,27 +36,22 @@ def main():
                 if event.key == K_LEFT:
                     charToDraw = charImgs['left']
                     if(walkabilityMap[playerCoordinate[0]-1][playerCoordinate[1]]):
-                        xToDraw -= TILESIDE
                         playerCoordinate[0]-=1
                 elif event.key == K_RIGHT:
                     charToDraw = charImgs['right']
                     if(walkabilityMap[playerCoordinate[0]+1][playerCoordinate[1]]):
-                        xToDraw += TILESIDE
                         playerCoordinate[0]+=1
                 elif event.key == K_UP:
                     charToDraw = charImgs['up']
                     if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]-1]):
-                        yToDraw -= TILESIDE
                         playerCoordinate[1]-=1
                 elif event.key == K_DOWN:
                     charToDraw = charImgs['down']
                     if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]+1]):
-                        yToDraw += TILESIDE
                         playerCoordinate[1]+=1
                 elif event.key == K_ESCAPE:
                     terminate()
-        drawMap(tileMap)
-        DISPLAYSURF.blit(charToDraw, (xToDraw, yToDraw))
+        drawMap(tileMap,playerCoordinate, charToDraw, mapDimension)
         pygame.display.update() # draw DISPLAYSURF to the screen.
         FPSCLOCK.tick()
 

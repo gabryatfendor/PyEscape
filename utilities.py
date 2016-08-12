@@ -1,4 +1,4 @@
-import sys, pygame
+import sys, pygame, time
 from pygame.locals import *
 from constants import *
 
@@ -57,6 +57,7 @@ def helpMenu():
         FPSCLOCK.tick(FPS)		
 
 def convertMap(filepath):
+#MAP IS SAVED BU COLUMN
     arrayToReturn = []
     mapStarted = False
     with open(filepath, "r") as ins:
@@ -73,32 +74,45 @@ def convertMap(filepath):
 
 def convertMapToTile(mapArray):
     tileArray = []
+    tileColumn = []
     for column in mapArray:
         for char in column:
             if char == ' ':
-                tileArray.append(tiles['grass'])
+                tileColumn.append(tiles['grass'])
             elif char == 'W':
-                tileArray.append(tiles['water'])
+                tileColumn.append(tiles['water'])
             elif char == 'T':
-                tileArray.append(tiles['tree'])
+                tileColumn.append(tiles['tree'])
             elif char == '#':
-                tileArray.append(tiles['wall'])
+                tileColumn.append(tiles['wall'])
             elif char == '-':
-                tileArray.append(tiles['outside'])
-        tileArray.append('\n')
-
+                tileColumn.append(tiles['outside'])
+        tileArray.append(tileColumn)
+        tileColumn = []
+                
     return tileArray
 
-def drawMap(tileArray):
-    x = OFFSETX
-    y = OFFSETY
-    for tile in tileArray:
-        if tile == '\n':
-            x += TILESIDE
-            y = OFFSETY
-        else:
+def drawMap(tileArray,coord,charImg,mapDimension):
+    columnToDraw = []
+    mapToDraw = []
+    for i in xrange(coord[0]-(SCREENMAXXTILE/2),coord[0]+(SCREENMAXXTILE/2)):
+        for j in xrange(coord[1]-(SCREENMAXYTILE/2),coord[1]+(SCREENMAXYTILE/2)):
+            print "%s,%s" % (i,j)
+            if i<0 or j<0 or i>mapDimension[1]-1 or j>mapDimension[0]-1:
+                columnToDraw.append(tiles['outside'])
+            else:
+                columnToDraw.append(tileArray[i][j])  
+        mapToDraw.append(columnToDraw)
+        columnToDraw = []
+    x = 0
+    y = 0
+    for i,column in enumerate(mapToDraw):
+        for j,tile in enumerate(mapToDraw[i]):
             DISPLAYSURF.blit(tile, (x, y))
             y += TILESIDE
+        x += TILESIDE
+        y = 0
+    DISPLAYSURF.blit(charImg, (PLAYERXONSCREEN, PLAYERYONSCREEN))
 
 def setPlayerStartingPoint(filepath):
     start = None
