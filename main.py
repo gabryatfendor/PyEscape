@@ -51,7 +51,7 @@ def main():
                         playerCoordinate[1]+=1
                 elif event.key == K_ESCAPE:
                     terminate()
-        drawMap(tileMap,playerCoordinate, charToDraw, mapDimension)
+        drawMap(tileMap,playerCoordinate, charToDraw, mapDimension, tiles['mountains'])
         pygame.display.update() # draw DISPLAYSURF to the screen.
         FPSCLOCK.tick()
 

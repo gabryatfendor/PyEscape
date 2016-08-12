@@ -1,4 +1,4 @@
-import sys, pygame, time
+import sys, pygame, random
 from pygame.locals import *
 from constants import *
 
@@ -57,7 +57,7 @@ def helpMenu():
         FPSCLOCK.tick(FPS)		
 
 def convertMap(filepath):
-#MAP IS SAVED BU COLUMN
+#MAP IS SAVED BY COLUMN
     arrayToReturn = []
     mapStarted = False
     with open(filepath, "r") as ins:
@@ -80,26 +80,25 @@ def convertMapToTile(mapArray):
             if char == ' ':
                 tileColumn.append(tiles['grass'])
             elif char == 'W':
-                tileColumn.append(tiles['water'])
+                tileColumn.append(random.choice(tiles['water']))
             elif char == 'T':
-                tileColumn.append(tiles['tree'])
+                tileColumn.append(random.choice(tiles['tree']))
             elif char == '#':
                 tileColumn.append(tiles['wall'])
             elif char == '-':
-                tileColumn.append(tiles['outside'])
+                tileColumn.append(tiles['nothing'])
         tileArray.append(tileColumn)
         tileColumn = []
                 
     return tileArray
 
-def drawMap(tileArray,coord,charImg,mapDimension):
+def drawMap(tileArray,coord,charImg,mapDimension,outsideTile):
     columnToDraw = []
     mapToDraw = []
-    for i in xrange(coord[0]-(SCREENMAXXTILE/2),coord[0]+(SCREENMAXXTILE/2)):
-        for j in xrange(coord[1]-(SCREENMAXYTILE/2),coord[1]+(SCREENMAXYTILE/2)):
-            print "%s,%s" % (i,j)
+    for i in xrange(coord[0]-(SCREENMAXXTILE/2),coord[0]+(SCREENMAXXTILE/2)+EXTRATILES):
+        for j in xrange(coord[1]-(SCREENMAXYTILE/2),coord[1]+(SCREENMAXYTILE/2)+EXTRATILES):
             if i<0 or j<0 or i>mapDimension[1]-1 or j>mapDimension[0]-1:
-                columnToDraw.append(tiles['outside'])
+                columnToDraw.append(outsideTile)
             else:
                 columnToDraw.append(tileArray[i][j])  
         mapToDraw.append(columnToDraw)

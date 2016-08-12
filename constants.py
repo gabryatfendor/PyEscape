@@ -7,7 +7,8 @@ WINHEIGHT = 600  # height in pixels
 CENTERX = WINWIDTH/2
 CENTERY = WINHEIGHT/2
 
-TILESIDE = 50
+TILESIDE = 64
+EXTRATILES = 2 #extra tiles to draw for not messing up with resolution
 
 SCREENMAXXTILE = WINWIDTH/TILESIDE
 SCREENMAXYTILE = WINHEIGHT/TILESIDE
@@ -31,7 +32,11 @@ charImgs = {'left': pygame.image.load('imgs/left.png'),
             'down': pygame.image.load('imgs/down.png')}
 
 tiles = {'grass': pygame.image.load('tiles/grass.png'),
-         'water': pygame.image.load('tiles/water.png'),
-         'tree': pygame.image.load('tiles/tree.png'),
+         'water': [pygame.image.load('tiles/water1.png'),
+         		   pygame.image.load('tiles/water2.png')],
+         'tree': [pygame.image.load('tiles/tree1.png'),
+         		  pygame.image.load('tiles/tree2.png'),
+         		  pygame.image.load('tiles/tree3.png')],
          'wall': pygame.image.load('tiles/wall.png'),
-         'outside': pygame.image.load('tiles/outside.png')}
+         'mountains': pygame.image.load('tiles/mountains.png'),
+         'nothing': pygame.image.load('tiles/nothing.png')}
