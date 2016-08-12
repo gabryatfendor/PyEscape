@@ -58,10 +58,14 @@ def helpMenu():
 
 def convertMap(filepath):
     arrayToReturn = []
+    mapStarted = False
     with open(filepath, "r") as ins:
         lineArray = []
         for line in ins:
-            lineArray.append(line)
+            if(mapStarted):
+                lineArray.append(line)
+            if(line == "*\n"):
+                mapStarted = True
 
     for line in lineArray:
         arrayToReturn.append(line[:-1])
@@ -96,14 +100,14 @@ def drawMap(tileArray):
             DISPLAYSURF.blit(tile, (x, y))
             y += TILESIDE
 
-def setPlayerStartingPoint(mapArray):
-    playerPos = []
-    for i,column in enumerate(zip(*mapArray)):
-        for j,char in enumerate(column):
-            if char == ' ':
-                playerPos.append(i)
-                playerPos.append(j)
-                return playerPos
+def setPlayerStartingPoint(filepath):
+    start = None
+    with open(filepath, "r") as ins:
+        for i,line in enumerate(ins):
+            if i == 0:
+                start = line.split('=',1)[-1].strip()
+
+    playerPos = [int(x) for x in start.split(',') if x.strip().isdigit()]
 
     return playerPos
 

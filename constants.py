@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 FPS = 60  # frames per second to update the screen
-WINWIDTH = 1500  # width of the program's window, in pixels
+WINWIDTH = 800  # width of the program's window, in pixels
 WINHEIGHT = 600  # height in pixels
 CENTERX = WINWIDTH/2
 CENTERY = WINHEIGHT/2

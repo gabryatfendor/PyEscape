@@ -18,11 +18,11 @@ def main():
     mainMenu()
 
     arrayMap = convertMap("maps/start.map")
+    playerCoordinate = setPlayerStartingPoint("maps/start.map")
     walkabilityMap = createWalkabilityMap(arrayMap)
     if TESTING:
         compareWalkabilityMap(arrayMap, walkabilityMap)
     tileMap = convertMapToTile(arrayMap)
-    playerCoordinate = setPlayerStartingPoint(arrayMap)
     xToDraw = (TILESIDE * playerCoordinate[0]) + OFFSETX
     yToDraw = (TILESIDE * playerCoordinate[1]) + OFFSETY
     #write char first time
@@ -35,23 +35,23 @@ def main():
             elif event.type == KEYDOWN:
                 # Handle key presses
                 if event.key == K_LEFT:
+                    charToDraw = charImgs['left']
                     if(walkabilityMap[playerCoordinate[0]-1][playerCoordinate[1]]):
-                        charToDraw = charImgs['left']
                         xToDraw -= TILESIDE
                         playerCoordinate[0]-=1
                 elif event.key == K_RIGHT:
+                    charToDraw = charImgs['right']
                     if(walkabilityMap[playerCoordinate[0]+1][playerCoordinate[1]]):
-                        charToDraw = charImgs['right']
                         xToDraw += TILESIDE
                         playerCoordinate[0]+=1
                 elif event.key == K_UP:
+                    charToDraw = charImgs['up']
                     if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]-1]):
-                        charToDraw = charImgs['up']
                         yToDraw -= TILESIDE
                         playerCoordinate[1]-=1
                 elif event.key == K_DOWN:
+                    charToDraw = charImgs['down']
                     if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]+1]):
-                        charToDraw = charImgs['down']
                         yToDraw += TILESIDE
                         playerCoordinate[1]+=1
                 elif event.key == K_ESCAPE:
