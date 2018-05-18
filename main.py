@@ -12,7 +12,8 @@ def main():
     DISPLAYSURF.fill(WHITE)
 
     pygame.display.set_caption('PyRPG')
-    
+
+    # Draw the main menu
     mainMenu()
 
     arrayMap = convertMap("maps/start.map")
@@ -21,7 +22,7 @@ def main():
     playerCoordinate = setPlayerStartingPoint("maps/start.map")
     walkabilityMap = createWalkabilityMap(arrayMap)
     tileMap = convertMapToTile(arrayMap)
-    
+
     #write char first time
     charToDraw = charImgs['down']
     while True:

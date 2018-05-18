@@ -37,6 +37,7 @@ def mainMenu():
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
+# TODO: write something in it
 def helpMenu():
     fontObjHelp = pygame.font.Font('freesansbold.ttf', 18)
     textSurfaceObjHelp = fontObjHelp.render('Press esc to go back in main menu,', True, BLACK, WHITE)
@@ -72,6 +73,7 @@ def convertMap(filepath):
         arrayToReturn.append(line[:-1])
     return list(zip(*arrayToReturn))
 
+# Convert every single char from the configuration in the path to the tile to be drawn
 def convertMapToTile(mapArray):
     tileArray = []
     tileColumn = []
@@ -95,10 +97,11 @@ def convertMapToTile(mapArray):
 def drawMap(tileArray,coord,charImg,mapDimension,outsideTile):
     columnToDraw = []
     mapToDraw = []
+    DISPLAYSURF.fill(WHITE) # This is to avoid overlapping of tiles
     for i in range(int(coord[0])-int((SCREENMAXXTILE/2)),int(coord[0])+int((SCREENMAXXTILE//2))+EXTRATILES):
         for j in range(int(coord[1])-int((SCREENMAXYTILE/2)),int(coord[1])+int((SCREENMAXYTILE//2))+EXTRATILES):
             if i<0 or j<0 or i>mapDimension[1]-1 or j>mapDimension[0]-1:
-                columnToDraw.append(outsideTile)
+                columnToDraw.append(outsideTile) # Out of map bound
             else:
                 columnToDraw.append(tileArray[i][j])
         mapToDraw.append(columnToDraw)
@@ -113,6 +116,7 @@ def drawMap(tileArray,coord,charImg,mapDimension,outsideTile):
         y = 0
     DISPLAYSURF.blit(charImg, (PLAYERXONSCREEN, PLAYERYONSCREEN))
 
+# Read the player starting point from the map file and set the starting coordinate
 def setPlayerStartingPoint(filepath):
     start = None
     with open(filepath, "r") as ins:
@@ -124,6 +128,7 @@ def setPlayerStartingPoint(filepath):
 
     return playerPos
 
+# Write the walkability map to be used when we move the char
 def createWalkabilityMap(mapArray):
     mapToReturn = []
     columnToAppend = []
