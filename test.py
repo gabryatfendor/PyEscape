@@ -6,10 +6,10 @@ from utilities import *
 def compareWalkabilityMap(arrayMap, walkabilityMap):
 	for i,row in enumerate(arrayMap):
 		for j,char in enumerate(row):
-			print "Analying %s,%s" % (i,j)
+			print("Analysing %s,%s" % (i,j))
 			if char == ' ':
 				if walkabilityMap[i][j] == False:
-					print "Error!"
+					print("Error!")
 			else:
 				if walkabilityMap[i][j] == True:
-					print "Error!"
+					print("Error!")

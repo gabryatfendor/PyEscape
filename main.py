@@ -17,7 +17,7 @@ def main():
 
     arrayMap = convertMap("maps/start.map")
     mapDimension = [len(arrayMap[0]),len(arrayMap)]
-    print "Map loaded, dimension %r" % mapDimension
+    print ("Map loaded, dimension %r" % mapDimension)
     playerCoordinate = setPlayerStartingPoint("maps/start.map")
     walkabilityMap = createWalkabilityMap(arrayMap)
     tileMap = convertMapToTile(arrayMap)

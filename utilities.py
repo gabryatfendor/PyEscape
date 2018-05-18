@@ -42,7 +42,7 @@ def helpMenu():
     textSurfaceObjHelp = fontObjHelp.render('Press esc to go back in main menu,', True, BLACK, WHITE)
     textRectObjHelp = textSurfaceObjHelp.get_rect()
     textRectObjHelp.x = 10
-    textRectObjHelp.y = 10 
+    textRectObjHelp.y = 10
 
     while True:  # the main menu loop
         DISPLAYSURF.fill(WHITE)
@@ -54,7 +54,7 @@ def helpMenu():
                     return
 
         pygame.display.update()
-        FPSCLOCK.tick(FPS)		
+        FPSCLOCK.tick(FPS)
 
 def convertMap(filepath):
 #MAP IS SAVED BY COLUMN
@@ -70,7 +70,7 @@ def convertMap(filepath):
 
     for line in lineArray:
         arrayToReturn.append(line[:-1])
-    return zip(*arrayToReturn)
+    return list(zip(*arrayToReturn))
 
 def convertMapToTile(mapArray):
     tileArray = []
@@ -89,18 +89,18 @@ def convertMapToTile(mapArray):
                 tileColumn.append(tiles['nothing'])
         tileArray.append(tileColumn)
         tileColumn = []
-                
+
     return tileArray
 
 def drawMap(tileArray,coord,charImg,mapDimension,outsideTile):
     columnToDraw = []
     mapToDraw = []
-    for i in xrange(coord[0]-(SCREENMAXXTILE/2),coord[0]+(SCREENMAXXTILE/2)+EXTRATILES):
-        for j in xrange(coord[1]-(SCREENMAXYTILE/2),coord[1]+(SCREENMAXYTILE/2)+EXTRATILES):
+    for i in range(coord[0]-(SCREENMAXXTILE//2),coord[0]+(SCREENMAXXTILE//2)+EXTRATILES):
+        for j in range(coord[1]-(SCREENMAXYTILE//2),coord[1]+(SCREENMAXYTILE//2)+EXTRATILES):
             if i<0 or j<0 or i>mapDimension[1]-1 or j>mapDimension[0]-1:
                 columnToDraw.append(outsideTile)
             else:
-                columnToDraw.append(tileArray[i][j])  
+                columnToDraw.append(tileArray[i][j])
         mapToDraw.append(columnToDraw)
         columnToDraw = []
     x = 0
@@ -136,7 +136,7 @@ def createWalkabilityMap(mapArray):
         mapToReturn.append(columnToAppend)
         columnToAppend = []
     return mapToReturn
-                
+
 def terminate():
 	pygame.quit()
 	sys.exit()
