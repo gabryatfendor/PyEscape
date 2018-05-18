@@ -95,8 +95,8 @@ def convertMapToTile(mapArray):
 def drawMap(tileArray,coord,charImg,mapDimension,outsideTile):
     columnToDraw = []
     mapToDraw = []
-    for i in range(coord[0]-(SCREENMAXXTILE//2),coord[0]+(SCREENMAXXTILE//2)+EXTRATILES):
-        for j in range(coord[1]-(SCREENMAXYTILE//2),coord[1]+(SCREENMAXYTILE//2)+EXTRATILES):
+    for i in range(int(coord[0])-int((SCREENMAXXTILE/2)),int(coord[0])+int((SCREENMAXXTILE//2))+EXTRATILES):
+        for j in range(int(coord[1])-int((SCREENMAXYTILE/2)),int(coord[1])+int((SCREENMAXYTILE//2))+EXTRATILES):
             if i<0 or j<0 or i>mapDimension[1]-1 or j>mapDimension[0]-1:
                 columnToDraw.append(outsideTile)
             else:
