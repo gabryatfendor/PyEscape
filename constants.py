@@ -9,7 +9,7 @@ WINHEIGHT = 768  # height in pixels
 CENTERX = WINWIDTH/2
 CENTERY = WINHEIGHT/2
 
-TILESIDE = 64
+TILESIDE = 16
 EXTRATILES = 2 #extra tiles to draw for not messing up with resolution
 
 SCREENMAXXTILE = WINWIDTH/TILESIDE
@@ -28,17 +28,17 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 128)
 
 # Images for the 4 directions
-charImgs = {'left': pygame.image.load('imgs/left.png'),
-            'right': pygame.image.load('imgs/right.png'),
-            'up': pygame.image.load('imgs/up.png'),
-            'down': pygame.image.load('imgs/down.png')}
+charImgs = {'left': pygame.transform.scale(pygame.image.load('imgs/left.png'), (TILESIDE, TILESIDE)),
+            'right': pygame.transform.scale(pygame.image.load('imgs/right.png'), (TILESIDE, TILESIDE)),
+            'up': pygame.transform.scale(pygame.image.load('imgs/up.png'), (TILESIDE, TILESIDE)),
+            'down': pygame.transform.scale(pygame.image.load('imgs/down.png'), (TILESIDE, TILESIDE))}
 
-tiles = {'grass': pygame.image.load('tiles/grass.png'),
-         'water': [pygame.image.load('tiles/water1.png'),
-         		   pygame.image.load('tiles/water2.png')],
-         'tree': [pygame.image.load('tiles/tree1.png'),
-         		  pygame.image.load('tiles/tree2.png'),
-         		  pygame.image.load('tiles/tree3.png')],
-         'wall': pygame.image.load('tiles/wall.png'),
-         'mountains': pygame.image.load('tiles/mountains.png'),
-         'nothing': pygame.image.load('tiles/nothing.png')}
+tiles = {'grass': pygame.transform.scale(pygame.image.load('tiles/grass.png'), (TILESIDE, TILESIDE)),
+         'water': [pygame.transform.scale(pygame.image.load('tiles/water1.png'), (TILESIDE, TILESIDE)),
+         		   pygame.transform.scale(pygame.image.load('tiles/water2.png'), (TILESIDE, TILESIDE))],
+         'tree': [pygame.transform.scale(pygame.image.load('tiles/tree1.png'), (TILESIDE, TILESIDE)),
+         		  pygame.transform.scale(pygame.image.load('tiles/tree2.png'), (TILESIDE, TILESIDE)),
+         		  pygame.transform.scale(pygame.image.load('tiles/tree3.png'), (TILESIDE, TILESIDE))],
+         'wall': pygame.transform.scale(pygame.image.load('tiles/wall.png'), (TILESIDE, TILESIDE)),
+         'mountains': pygame.transform.scale(pygame.image.load('tiles/mountains.png'), (TILESIDE, TILESIDE)),
+         'nothing': pygame.transform.scale(pygame.image.load('tiles/nothing.png'), (TILESIDE, TILESIDE))}
