@@ -10,23 +10,23 @@ from modules.strings import Menu
 def main_menu():
     """ Menu printed before starting the game """
     #  Title variables
-    font_obj_title = pygame.font.Font('freesansbold.ttf', 32)
-    text_surface_obj_title = font_obj_title.render('PyRPG', True, Color.RED, Color.WHITE)
-    text_rect_obj_title = text_surface_obj_title.get_rect()
-    text_rect_obj_title.center = (Screen.CENTERX, 50)
+    font_title = pygame.font.Font('freesansbold.ttf', 32)
+    surface_title = font_title.render('PyRPG', True, Color.RED, Color.WHITE)
+    rect_title = surface_title.get_rect()
+    rect_title.center = (Screen.CENTERX, 50)
 
     #  Subtitle variables
-    font_obj_subtitle = pygame.font.Font('freesansbold.ttf', 18)
-    text_surface_obj_subtitle = font_obj_subtitle.render(Menu.intro, True, Color.BLUE, Color.WHITE)
-    text_rect_obj_subtitle = text_surface_obj_subtitle.get_rect()
-    text_rect_obj_subtitle.center = (Screen.CENTERX, 120)
+    font_subtitle = pygame.font.Font('freesansbold.ttf', 18)
+    surface_subtitle = font_subtitle.render(Menu.menu_intro, True, Color.BLUE, Color.WHITE)
+    rect_subtitle = surface_subtitle.get_rect()
+    rect_subtitle.center = (Screen.CENTERX, 120)
 
     has_menu_appeared = False
     while True:  # the main menu loop
         Screen.DISPLAYSURF.fill(Color.WHITE)
-        Screen.DISPLAYSURF.blit(text_surface_obj_title, text_rect_obj_title)
+        Screen.DISPLAYSURF.blit(surface_title, rect_title)
         if has_menu_appeared:
-            Screen.DISPLAYSURF.blit(text_surface_obj_subtitle, text_rect_obj_subtitle)
+            Screen.DISPLAYSURF.blit(surface_subtitle, rect_subtitle)
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and has_menu_appeared:
@@ -46,7 +46,7 @@ def main_menu():
 def help_menu():
     """ Screen that appears whenever help is triggered """
     font_obj_help = pygame.font.Font('freesansbold.ttf', 18)
-    text_surface_obj_help = font_obj_help.render(Menu.exit_menu, True, Color.BLACK, Color.WHITE)
+    text_surface_obj_help = font_obj_help.render(Menu.menu_exit, True, Color.BLACK, Color.WHITE)
     text_rect_obj_help = text_surface_obj_help.get_rect()
     text_rect_obj_help.x = 10
     text_rect_obj_help.y = 10

@@ -9,7 +9,7 @@ class Screen:
     CENTERX = WINWIDTH/2
     CENTERY = WINHEIGHT/2
 
-    TILESIDE = 16
+    TILESIDE = 64
     EXTRATILES = 2 #extra tiles to draw for not messing up with resolution
 
     MAXXTILE = WINWIDTH/TILESIDE

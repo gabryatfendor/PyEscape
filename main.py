@@ -18,10 +18,10 @@ def main():
     # Draw the main menu
     main_menu()
 
-    array_map = import_map("maps/start.map")
+    array_map = import_map("maps/lvl_01.map")
     map_dimension = [len(array_map[0]), len(array_map)]
     print("Map loaded, dimension %r" % map_dimension)
-    player_coord = set_char_start("maps/start.map")
+    player_coord = set_char_start("maps/lvl_01.map")
     walkability_map = draw_walk_map(array_map)
     tile_map = convert_map_to_tile(array_map)
 
