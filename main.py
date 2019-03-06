@@ -1,15 +1,18 @@
-import sys, os, pygame
+import pygame
+
 from pygame.locals import *
-from constants import *
-from utilities import *
-from test import *
+from modules.game import Game
+from modules.screen import Screen
+from modules.graphics import Color, Images
+from modules.map import *
+from utilities import mainMenu, terminate
 
 def main():
 
     # Pygame initialization
+    pygame.init()
     FPSCLOCK = pygame.time.Clock()
-    DISPLAYSURF = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
-    DISPLAYSURF.fill(WHITE)
+    Screen.DISPLAYSURF.fill(Color.WHITE)
 
     pygame.display.set_caption('PyRPG')
 
@@ -24,36 +27,36 @@ def main():
     tileMap = convertMapToTile(arrayMap)
 
     #write char first time
-    charToDraw = charImgs['down']
+    charToDraw = Images.charImgs['down']
     while True:
         keys = pygame.key.get_pressed()
         if keys[K_LEFT]:
-            charToDraw = charImgs['left']
+            charToDraw = Images.charImgs['left']
             if(walkabilityMap[playerCoordinate[0]-1][playerCoordinate[1]]):
                 playerCoordinate[0]-=1
         elif keys[K_RIGHT]:
-            charToDraw = charImgs['right']
+            charToDraw = Images.charImgs['right']
             if(walkabilityMap[playerCoordinate[0]+1][playerCoordinate[1]]):
                 playerCoordinate[0]+=1
         elif keys[K_UP]:
-            charToDraw = charImgs['up']
+            charToDraw = Images.charImgs['up']
             if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]-1]):
                 playerCoordinate[1]-=1
         elif keys[K_DOWN]:
-            charToDraw = charImgs['down']
+            charToDraw = Images.charImgs['down']
             if(walkabilityMap[playerCoordinate[0]][playerCoordinate[1]+1]):
                 playerCoordinate[1]+=1
         for event in pygame.event.get(): # event handling loop
-            DISPLAYSURF.fill(WHITE)
+            Screen.DISPLAYSURF.fill(Color.WHITE)
             if event.type == QUIT:
                 terminate()
             elif event.type == KEYDOWN:
                 # Handle key presses
                 if event.key == K_ESCAPE:
                     terminate()
-        drawMap(tileMap,playerCoordinate, charToDraw, mapDimension, tiles['mountains'])
+        drawMap(tileMap,playerCoordinate, charToDraw, mapDimension, Images.tiles['mountains'])
         pygame.display.update() # draw DISPLAYSURF to the screen.
-        FPSCLOCK.tick()
+        Game.FPSCLOCK.tick()
 
 if __name__ == '__main__':
 	main()
