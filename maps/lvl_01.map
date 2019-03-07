@@ -1,4 +1,6 @@
 START = 2,2
+DIRECTION = S
+BACKGROUND = mountains
 *
 #################----------      
 #     T         #######----
