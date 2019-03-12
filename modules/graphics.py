@@ -11,20 +11,26 @@ class Color:
     RED = (255, 0, 0)
     BLUE = (0, 0, 128)
 
-class Images:
+class Tiles:
     """ Tiles used in game """
     default = Screen.TILESIDE, Screen.TILESIDE
-    charImgs = {'left': pygame.transform.scale(pygame.image.load('imgs/left.png'), default),
-                'right': pygame.transform.scale(pygame.image.load('imgs/right.png'), default),
-                'up': pygame.transform.scale(pygame.image.load('imgs/up.png'), default),
-                'down': pygame.transform.scale(pygame.image.load('imgs/down.png'), default)}
+    default_player = {'left': pygame.transform.scale(pygame.image.load('tiles/player/left.png'), default),
+                'right': pygame.transform.scale(pygame.image.load('tiles/player/right.png'), default),
+                'up': pygame.transform.scale(pygame.image.load('tiles/player/up.png'), default),
+                'down': pygame.transform.scale(pygame.image.load('tiles/player/down.png'), default)}
 
-    tiles = {'grass': pygame.transform.scale(pygame.image.load('tiles/grass.png'), default),
-             'water': [pygame.transform.scale(pygame.image.load('tiles/water1.png'), default),
-                       pygame.transform.scale(pygame.image.load('tiles/water2.png'), default)],
-             'tree': [pygame.transform.scale(pygame.image.load('tiles/tree1.png'), default),
-                      pygame.transform.scale(pygame.image.load('tiles/tree2.png'), default),
-                      pygame.transform.scale(pygame.image.load('tiles/tree3.png'), default)],
-             'wall': pygame.transform.scale(pygame.image.load('tiles/wall.png'), default),
-             'mountains': pygame.transform.scale(pygame.image.load('tiles/mountains.png'), default),
-             'nothing': pygame.transform.scale(pygame.image.load('tiles/nothing.png'), default)}
+    environment = {'grass': pygame.transform.scale(pygame.image.load('tiles/environment/grass.png'), default),
+             'water': [pygame.transform.scale(pygame.image.load('tiles/environment/water1.png'), default),
+                       pygame.transform.scale(pygame.image.load('tiles/environment/water2.png'), default)],
+             'tree': [pygame.transform.scale(pygame.image.load('tiles/environment/tree1.png'), default),
+                      pygame.transform.scale(pygame.image.load('tiles/environment/tree2.png'), default),
+                      pygame.transform.scale(pygame.image.load('tiles/environment/tree3.png'), default)],
+             'wall': pygame.transform.scale(pygame.image.load('tiles/environment/wall.png'), default),
+             'mountains': pygame.transform.scale(pygame.image.load('tiles/environment/mountains.png'), default),
+             'nothing': pygame.transform.scale(pygame.image.load('tiles/environment/nothing.png'), default)}
+    
+    knight = {'left': pygame.transform.scale(pygame.image.load('tiles/npc/knight_west.png'), default),
+                'right': pygame.transform.scale(pygame.image.load('tiles/npc/knight_east.png'), default),
+                'up': pygame.transform.scale(pygame.image.load('tiles/npc/knight_north.png'), default),
+                'down': pygame.transform.scale(pygame.image.load('tiles/npc/knight_south.png'), default)}
+    

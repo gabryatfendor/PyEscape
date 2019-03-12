@@ -1,40 +1,48 @@
 """ Game common properties """
 import sys
 import pygame
-from modules.graphics import Color, Images
-from modules.screen import Screen
-from modules.map import Map
-from modules.strings import Common
+from .graphics import Color, Tiles
+from .screen import Screen
+from .map import Map
+from .strings import Common
+from .ai import Npc
 
 class Game:
     """ Game common utilities """
     FPS = 60  # frames per second to update the screen
     FPSCLOCK = pygame.time.Clock()
 
-    def main_loop(self, walk_matrix, coord, tile_matrix, dimension):
+    def main_loop(self, walk_matrix, player_coords, tile_matrix, dimension, npc_coords):
         """ Main game loop """
         #write char first time
         game_map = Map()
         background_tile = game_map.set_background("maps/lvl_01.map")
         char_to_draw = game_map.set_char_start_orientation("maps/lvl_01.map")
+        npc_array = []
+
+        #instantiate npcs
+        for tuples in npc_coords:
+            new_npc = Npc(tuples[0], tuples[1], Tiles.knight)
+            npc_array.append(new_npc)
+
         while True:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                char_to_draw = Images.charImgs['left']
-                if walk_matrix[coord[0]-1][coord[1]]:
-                    coord[0] -= 1
+                char_to_draw = Tiles.default_player['left']
+                if walk_matrix[player_coords[0]-1][player_coords[1]]:
+                    player_coords[0] -= 1
             elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                char_to_draw = Images.charImgs['right']
-                if walk_matrix[coord[0]+1][coord[1]]:
-                    coord[0] += 1
+                char_to_draw = Tiles.default_player['right']
+                if walk_matrix[player_coords[0]+1][player_coords[1]]:
+                    player_coords[0] += 1
             elif keys[pygame.K_UP] or keys[pygame.K_w]:
-                char_to_draw = Images.charImgs['up']
-                if walk_matrix[coord[0]][coord[1]-1]:
-                    coord[1] -= 1
+                char_to_draw = Tiles.default_player['up']
+                if walk_matrix[player_coords[0]][player_coords[1]-1]:
+                    player_coords[1] -= 1
             elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-                char_to_draw = Images.charImgs['down']
-                if walk_matrix[coord[0]][coord[1]+1]:
-                    coord[1] += 1
+                char_to_draw = Tiles.default_player['down']
+                if walk_matrix[player_coords[0]][player_coords[1]+1]:
+                    player_coords[1] += 1
             for event in pygame.event.get(): # event handling loop
                 Screen.DISPLAYSURF.fill(Color.WHITE)
                 if event.type == pygame.QUIT:
@@ -43,7 +51,7 @@ class Game:
                     # Handle key presses
                     if event.key == pygame.K_ESCAPE:
                         self.terminate()
-            game_map.draw_map(tile_matrix, coord, char_to_draw, dimension, background_tile)
+            game_map.draw_map(tile_matrix, player_coords, char_to_draw, dimension, background_tile, npc_array)
             pygame.display.update() # draw DISPLAYSURF to the screen.
             self.FPSCLOCK.tick()
 
