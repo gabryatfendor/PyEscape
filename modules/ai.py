@@ -1,6 +1,6 @@
 """Data related to entities not controlled by the player"""
 
-from .screen import Screen
+from .graphics import Tiles
 
 class Npc:
     """Class for non playable character in game"""
@@ -23,3 +23,15 @@ class Npc:
             self.current_tile = self.tile_array['up']
         elif direction == 's':
             self.current_tile = self.tile_array['down']
+
+    @staticmethod
+    def create_npc_array(npc_coords):
+        """Given a coords array, istantiate npcs"""
+        npc_array = []
+
+        #instantiate npcs
+        for tuples in npc_coords:
+            new_npc = Npc(tuples[0], tuples[1], Tiles.knight)
+            npc_array.append(new_npc)
+
+        return npc_array

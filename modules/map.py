@@ -8,7 +8,8 @@ from .graphics import Color, Tiles
 class Map:
     """ Everything regarding the game map """
 
-    def import_map(self, file_path):
+    @staticmethod
+    def import_map(file_path):
         """ Importing map from file line by line """
         array_to_return = []
         map_started = False
@@ -24,7 +25,8 @@ class Map:
             array_to_return.append(line[:-1])
         return list(zip(*array_to_return))
 
-    def convert_map_to_tile(self, map_array):
+    @staticmethod
+    def convert_map_to_tile(map_array):
         """ Convert every single char from the configuration in the path to the tile to be drawn """
         tile_array = []
         tile_column = []
@@ -100,7 +102,8 @@ class Map:
 
         return [x_rendered, y_rendered]
 
-    def set_char_start(self, file_path):
+    @staticmethod
+    def set_char_start(file_path):
         """ Read the player starting point from the map file and set the starting coordinate """
         start = None
         with open(file_path, "r") as ins:
@@ -112,7 +115,8 @@ class Map:
 
         return player_pos
 
-    def set_char_start_orientation(self, file_path):
+    @staticmethod
+    def set_char_start_orientation(file_path):
         """ Read from map file player initial direction and return image """
         direction = None
         image = None
@@ -132,7 +136,8 @@ class Map:
 
         return image
 
-    def set_background(self, file_path):
+    @staticmethod
+    def set_background(file_path):
         """ Read from map file background tile """
         background_string = None
         image = None
@@ -144,7 +149,8 @@ class Map:
         image = Tiles.environment[background_string]
         return image
 
-    def draw_walk_map(self, map_array):
+    @staticmethod
+    def draw_walk_map(map_array):
         """ Write the walkability map to be used when we move the char """
         map_to_return = []
         column_to_append = []

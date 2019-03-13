@@ -5,25 +5,18 @@ from .graphics import Color, Tiles
 from .screen import Screen
 from .map import Map
 from .strings import Common
-from .ai import Npc
 
 class Game:
     """ Game common utilities """
     FPS = 60  # frames per second to update the screen
     FPSCLOCK = pygame.time.Clock()
 
-    def main_loop(self, walk_matrix, player_coords, tile_matrix, dimension, npc_coords):
+    def main_loop(self, walk_matrix, player_coords, tile_matrix, dimension, npc_array):
         """ Main game loop """
         #write char first time
         game_map = Map()
-        background_tile = game_map.set_background("maps/lvl_01.map")
-        char_to_draw = game_map.set_char_start_orientation("maps/lvl_01.map")
-        npc_array = []
-
-        #instantiate npcs
-        for tuples in npc_coords:
-            new_npc = Npc(tuples[0], tuples[1], Tiles.knight)
-            npc_array.append(new_npc)
+        background_tile = Map.set_background("maps/lvl_01.map")
+        char_to_draw = Map.set_char_start_orientation("maps/lvl_01.map")
 
         while True:
             keys = pygame.key.get_pressed()
