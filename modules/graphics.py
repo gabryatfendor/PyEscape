@@ -27,7 +27,8 @@ class Tiles:
                       pygame.transform.scale(pygame.image.load('tiles/environment/tree3.png'), default)],
              'wall': pygame.transform.scale(pygame.image.load('tiles/environment/wall.png'), default),
              'mountains': pygame.transform.scale(pygame.image.load('tiles/environment/mountains.png'), default),
-             'nothing': pygame.transform.scale(pygame.image.load('tiles/environment/nothing.png'), default)}
+             'nothing': pygame.transform.scale(pygame.image.load('tiles/environment/nothing.png'), default),
+             'exit': pygame.transform.scale(pygame.image.load('tiles/environment/exit.png'), default)}
     
     knight = {'left': pygame.transform.scale(pygame.image.load('tiles/npc/knight_west.png'), default),
                 'right': pygame.transform.scale(pygame.image.load('tiles/npc/knight_east.png'), default),

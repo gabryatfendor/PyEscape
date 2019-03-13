@@ -42,6 +42,8 @@ class Map:
                     tile_column.append(Tiles.environment['wall'])
                 elif char == '-':
                     tile_column.append(Tiles.environment['nothing'])
+                elif char == 'X':
+                    tile_column.append(Tiles.environment['exit'])
             tile_array.append(tile_column)
             tile_column = []
 
@@ -158,7 +160,7 @@ class Map:
         column_to_append = []
         for column in map_array:
             for char in column:
-                if char == ' ':
+                if char == ' ' or char == 'X':
                     column_to_append.append(True)
                 else:
                     column_to_append.append(False)
