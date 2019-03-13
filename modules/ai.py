@@ -2,8 +2,10 @@
 
 from .graphics import Tiles
 
-class Npc:
+class Npc:    
     """Class for non playable character in game"""
+    NPC_MOVE_SPEED = 3000
+
     def __init__(self, x, y, tile_array):
         """Initializer with coordinates and tile"""
         self.x = x

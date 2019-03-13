@@ -47,7 +47,8 @@ class Map:
 
         return tile_array
 
-    def draw_map(self, tile_array, player_coords, char_img, map_dimension, outside_tile, npc_array):
+    @staticmethod
+    def draw_map(tile_array, player_coords, char_img, map_dimension, outside_tile, npc_array):
         """ Map rendering from imported file """
         column_to_draw = []
         map_to_draw = []
@@ -86,10 +87,11 @@ class Map:
         # (screen is always a subset of the map).
         for npc in npc_array:
             if npc.x in rendered_array_width and npc.y in rendered_array_height:
-                render_coordinate = self.arr_coord_to_render_coord(npc.x, npc.y, rendered_array_width, rendered_array_height)
+                render_coordinate = Map.arr_coord_to_render_coord(npc.x, npc.y, rendered_array_width, rendered_array_height)
                 Screen.DISPLAYSURF.blit(npc.current_tile, (render_coordinate[0] * Screen.TILESIDE, render_coordinate[1] * Screen.TILESIDE))
 
-    def arr_coord_to_render_coord(self, npc_x, npc_y, rendered_array_width, rendered_array_height):
+    @staticmethod
+    def arr_coord_to_render_coord(npc_x, npc_y, rendered_array_width, rendered_array_height):
         """Converting map array coordinates to actual rendering coordinate"""
         x_rendered = 0
         y_rendered = 0
