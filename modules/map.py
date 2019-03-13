@@ -150,8 +150,8 @@ class Map:
         return image
 
     @staticmethod
-    def draw_walk_map(map_array):
-        """ Write the walkability map to be used when we move the char """
+    def draw_walk_map(map_array, npc_array):
+        """ Write the walkability map to be used when we move the char directly from the array map imported from the file (nothing dynamic in it) """
         map_to_return = []
         column_to_append = []
         for column in map_array:
@@ -162,4 +162,9 @@ class Map:
                     column_to_append.append(False)
             map_to_return.append(column_to_append)
             column_to_append = []
+
+        #Overwrite with false where we have enemies
+        for npc in npc_array:
+            map_to_return[npc.x][npc.y] = False
+
         return map_to_return
