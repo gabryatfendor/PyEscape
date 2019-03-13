@@ -54,8 +54,6 @@ class Map:
         max_y = Screen.MAXYTILE
         extra_space = Screen.EXTRATILES
 
-        #print("range for i -> {}, {}".format(int(player_coords[0])-int((max_x/2)), int(player_coords[0])+int((max_x//2))+extra_space))
-        #print("range for j -> {}, {}".format(int(player_coords[1])-int((max_y/2)), int(player_coords[1])+int((max_y//2))+extra_space))
         rendered_array_width = range(int(player_coords[0])-int((max_x/2)), int(player_coords[0])+int((max_x//2))+extra_space)
         rendered_array_height = range(int(player_coords[1])-int((max_y/2)), int(player_coords[1])+int((max_y//2))+extra_space)
         # using as center player coordinates (since player is always drawn in the center) we draw only data from the array
@@ -82,26 +80,25 @@ class Map:
         # we do this at the end to overwrite the floor in player's place
         Screen.DISPLAYSURF.blit(char_img, (Screen.PLAYERXONSCREEN, Screen.PLAYERYONSCREEN))
 
+        # to print npc in the correct place we convert the coords they have in the array with the screen coordinates
+        # (screen is always a subset of the map).
         for npc in npc_array:
             if npc.x in rendered_array_width and npc.y in rendered_array_height:
-                offset = self.set_npc_offset(rendered_array_width, rendered_array_height, map_dimension)
-                Screen.DISPLAYSURF.blit(npc.current_tile, ((npc.x + offset[0]) * Screen.TILESIDE, (npc.y + offset[1]) * Screen.TILESIDE))
+                render_coordinate = self.arr_coord_to_render_coord(npc.x, npc.y, rendered_array_width, rendered_array_height)
+                Screen.DISPLAYSURF.blit(npc.current_tile, (render_coordinate[0] * Screen.TILESIDE, render_coordinate[1] * Screen.TILESIDE))
 
-    def set_npc_offset(self, rendered_array_widht, rendered_array_height, map_dimension):
-        x_offset = 0
-        y_offset = 0
-        for i in rendered_array_widht:
-            if i < 0:
-                x_offset += 1
-            elif i > map_dimension[1]-1:
-                x_offset -= 1
-        for j in rendered_array_height:
-            if j < 0:
-                y_offset += 1
-            elif j > map_dimension[0]-1:
-                y_offset -= 1
+    def arr_coord_to_render_coord(self, npc_x, npc_y, rendered_array_width, rendered_array_height):
+        """Converting map array coordinates to actual rendering coordinate"""
+        x_rendered = 0
+        y_rendered = 0
+        for idx, i in enumerate(rendered_array_width):
+            if i == npc_x:
+                x_rendered = idx
+        for idx, j in enumerate(rendered_array_height):
+            if j == npc_y:
+                y_rendered = idx
 
-        return [x_offset, y_offset]
+        return [x_rendered, y_rendered]
 
     def set_char_start(self, file_path):
         """ Read the player starting point from the map file and set the starting coordinate """
