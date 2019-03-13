@@ -10,16 +10,21 @@ from .ai import Npc
 class Game:
     """ Game common utilities """
     FPS = 60  # frames per second to update the screen
+    PLAYER_MOVE_SPEED = int(FPS * 2)
 
     def main_loop(self, walk_matrix, player_coords, tile_matrix, dimension, npc_array):
         """ Main game loop """
         clock = pygame.time.Clock()
         npc_move_event = pygame.USEREVENT + 1
+        player_move_event = pygame.USEREVENT + 2
         pygame.time.set_timer(npc_move_event, Npc.NPC_MOVE_SPEED)
+        pygame.time.set_timer(player_move_event, Game.PLAYER_MOVE_SPEED)
 
         #write char first time
         background_tile = Map.set_background("maps/lvl_01.map")
         char_to_draw = Map.set_char_start_orientation("maps/lvl_01.map")
+        #player position is non walkable
+        walk_matrix[player_coords[0]][player_coords[1]] = False
 
         while True:
             clock.tick(self.FPS)
@@ -29,18 +34,23 @@ class Game:
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_ESCAPE]:
-                self.terminate()
+                break
 
-            player_coords = Game.move_player(keys, player_coords, walk_matrix)
-            char_to_draw = Game.change_orientation_tile(keys, char_to_draw)
             for event in pygame.event.get(): # event handling loop
                 if event.type == npc_move_event:
-                    print("I like to move move")
+                    updated_npc_map = Npc.move_npc(npc_array, walk_matrix)
+                    npc_array = updated_npc_map[0]
+                    walk_matrix = updated_npc_map[1]
+                if event.type == player_move_event:
+                    updated_player_map = Game.move_player(keys, player_coords, walk_matrix)
+                    player_coords = updated_player_map[0]
+                    walk_matrix = updated_player_map[1]
+                    char_to_draw = Game.change_orientation_tile(keys, char_to_draw)
 
             Map.draw_map(tile_matrix, player_coords, char_to_draw, dimension, background_tile, npc_array)
             pygame.display.update() # draw DISPLAYSURF to the screen.
 
-        self.terminate()
+        Game.terminate()
 
     @staticmethod
     def move_player(keys, player_coords, walk_matrix):
@@ -48,17 +58,25 @@ class Game:
         new_player_coords = player_coords
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             if walk_matrix[player_coords[0]-1][player_coords[1]]:
+                walk_matrix[player_coords[0]][player_coords[1]] = True
+                walk_matrix[player_coords[0]-1][player_coords[1]] = False
                 new_player_coords[0] -= 1
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             if walk_matrix[player_coords[0]+1][player_coords[1]]:
+                walk_matrix[player_coords[0]][player_coords[1]] = True
+                walk_matrix[player_coords[0]+1][player_coords[1]] = False
                 new_player_coords[0] += 1
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
             if walk_matrix[player_coords[0]][player_coords[1]-1]:
+                walk_matrix[player_coords[0]][player_coords[1]] = True
+                walk_matrix[player_coords[0]][player_coords[1]-1] = False
                 new_player_coords[1] -= 1
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
             if walk_matrix[player_coords[0]][player_coords[1]+1]:
+                walk_matrix[player_coords[0]][player_coords[1]] = True
+                walk_matrix[player_coords[0]][player_coords[1]+1] = False
                 new_player_coords[1] += 1
-        return new_player_coords
+        return [new_player_coords, walk_matrix]
 
     @staticmethod
     def change_orientation_tile(keys, original_orientation_img):
@@ -74,7 +92,8 @@ class Game:
             char_to_draw = Tiles.default_player['down']
         return char_to_draw
 
-    def terminate(self):
+    @staticmethod
+    def terminate():
         """ Exit from the game """
         pygame.quit()
         sys.exit()
@@ -109,7 +128,7 @@ class Menu:
                     elif event.key == pygame.K_h:
                         self.help_menu()
                     elif event.key == pygame.K_ESCAPE:
-                        Game.terminate(Game)
+                        Game.terminate()
                     if not has_menu_appeared:
                         has_menu_appeared = True
 

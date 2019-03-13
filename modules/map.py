@@ -32,7 +32,7 @@ class Map:
         tile_column = []
         for column in map_array:
             for char in column:
-                if char == ' ':
+                if char == ' ' or char == 'K':
                     tile_column.append(Tiles.environment['grass'])
                 elif char == 'W':
                     tile_column.append(random.choice(Tiles.environment['water']))
@@ -152,7 +152,7 @@ class Map:
         return image
 
     @staticmethod
-    def draw_walk_map(map_array, npc_array):
+    def draw_walk_map(map_array):
         """ Write the walkability map to be used when we move the char directly from the array map imported from the file (nothing dynamic in it) """
         map_to_return = []
         column_to_append = []
@@ -164,9 +164,5 @@ class Map:
                     column_to_append.append(False)
             map_to_return.append(column_to_append)
             column_to_append = []
-
-        #Overwrite with false where we have enemies
-        for npc in npc_array:
-            map_to_return[npc.x][npc.y] = False
 
         return map_to_return

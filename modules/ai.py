@@ -1,10 +1,11 @@
 """Data related to entities not controlled by the player"""
 
+from random import randint
 from .graphics import Tiles
 
-class Npc:    
+class Npc:
     """Class for non playable character in game"""
-    NPC_MOVE_SPEED = 3000
+    NPC_MOVE_SPEED = 1000
 
     def __init__(self, x, y, tile_array):
         """Initializer with coordinates and tile"""
@@ -13,27 +14,33 @@ class Npc:
         self.tile_array = tile_array
         self.current_tile = tile_array['right']
 
-    def move(self, new_x, new_y, direction):
-        """Set new position for NPC"""
-        self.x = new_x
-        self.y = new_y
-        if direction == 'e':
-            self.current_tile = self.tile_array['right']
-        elif direction == 'w':
-            self.current_tile = self.tile_array['left']
-        elif direction == 'n':
-            self.current_tile = self.tile_array['up']
-        elif direction == 's':
-            self.current_tile = self.tile_array['down']
-
     @staticmethod
-    def create_npc_array(npc_coords):
-        """Given a coords array, istantiate npcs"""
-        npc_array = []
-
-        #instantiate npcs
-        for tuples in npc_coords:
-            new_npc = Npc(tuples[0], tuples[1], Tiles.knight)
-            npc_array.append(new_npc)
-
-        return npc_array
+    def move_npc(npc_array, walk_matrix):
+        """Change x and y of every npc"""
+        for npc in npc_array:
+            direction = randint(1, 4)
+            if direction == 1:
+                npc.current_tile = npc.tile_array['up']
+                if walk_matrix[npc.x][npc.y-1]: #north
+                    walk_matrix[npc.x][npc.y] = True
+                    walk_matrix[npc.x][npc.y-1] = False
+                    npc.y -= 1
+            elif direction == 2:
+                npc.current_tile = npc.tile_array['right']
+                if walk_matrix[npc.x+1][npc.y]: #east
+                    walk_matrix[npc.x][npc.y] = True
+                    walk_matrix[npc.x+1][npc.y] = False
+                    npc.x += 1
+            elif direction == 3:
+                npc.current_tile = npc.tile_array['down']
+                if walk_matrix[npc.x][npc.y+1]: #south
+                    walk_matrix[npc.x][npc.y] = True
+                    walk_matrix[npc.x][npc.y+1] = False
+                    npc.y += 1
+            elif direction == 4:
+                npc.current_tile = npc.tile_array['left']
+                if walk_matrix[npc.x-1][npc.y]: #west
+                    walk_matrix[npc.x][npc.y] = True
+                    walk_matrix[npc.x-1][npc.y] = False
+                    npc.x -= 1
+        return [npc_array, walk_matrix]
