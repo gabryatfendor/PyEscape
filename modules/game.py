@@ -1,12 +1,12 @@
 """ Game common properties """
 import sys
 import pygame
+from enums.direction import Direction
 from .graphics import Color, Tiles
 from .screen import Screen
 from .map import Map
 from .strings import Common
 from .ai import Npc
-from enums.direction import Direction
 
 class Game:
     """ Game common utilities """
@@ -135,18 +135,27 @@ class Menu:
 
             pygame.display.update()
 
-    # TODO: write something in it
     def help_menu(self):
         """ Screen that appears whenever help is triggered """
         font_obj = pygame.font.Font('freesansbold.ttf', 18)
-        text_surface_obj = font_obj.render(Common.menu_exit, True, Color.BLACK, Color.WHITE)
+        text_surface_obj = font_obj.render(Common.menu_help_body_line1, True, Color.BLACK, Color.WHITE)
+        text_surface_obj_2 = font_obj.render(Common.menu_help_body_line2, True, Color.BLACK, Color.WHITE)
+        text_surface_obj_exit = font_obj.render(Common.menu_help_exit, True, Color.BLACK, Color.WHITE)
         text_rect_obj = text_surface_obj.get_rect()
+        text_rect_obj_2 = text_surface_obj_2.get_rect()
+        text_rect_obj_exit = text_surface_obj_exit.get_rect()
         text_rect_obj.x = 10
         text_rect_obj.y = 10
+        text_rect_obj_exit.x = 10
+        text_rect_obj_2.x = 10
+        text_rect_obj_2.y = 40
+        text_rect_obj_exit.y = 100
 
         while True:  # the main menu loop
             Screen.DISPLAYSURF.fill(Color.WHITE)
             Screen.DISPLAYSURF.blit(text_surface_obj, text_rect_obj)
+            Screen.DISPLAYSURF.blit(text_surface_obj_2, text_rect_obj_2)
+            Screen.DISPLAYSURF.blit(text_surface_obj_exit, text_rect_obj_exit)
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
