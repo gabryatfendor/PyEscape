@@ -31,7 +31,9 @@ def main():
 
     walkability_map = Map.draw_walk_map(array_map)
     tile_map = Map.convert_map_to_tile(array_map)
-    game_object.main_loop(walkability_map, player_coord, tile_map, map_dimension, npc_array)
+    exit_coords = [x for x in array_map if 'X' in x][0]
+    exit_coords = [array_map.index(exit_coords), exit_coords.index('X')]
+    game_object.main_loop(walkability_map, player_coord, tile_map, map_dimension, npc_array, exit_coords)
 
 if __name__ == '__main__':
     main()

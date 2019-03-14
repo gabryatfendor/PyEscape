@@ -13,7 +13,7 @@ class Game:
     FPS = 60  # frames per second to update the screen
     PLAYER_MOVE_SPEED = int(FPS * 2)
 
-    def main_loop(self, walk_matrix, player_coords, tile_matrix, dimension, npc_array):
+    def main_loop(self, walk_matrix, player_coords, tile_matrix, dimension, npc_array, exit_coords):
         """ Main game loop """
         clock = pygame.time.Clock()
         npc_move_event = pygame.USEREVENT + 1
@@ -47,6 +47,10 @@ class Game:
                     player_coords = updated_player_map[0]
                     walk_matrix = updated_player_map[1]
                     char_to_draw = Game.change_orientation_tile(keys, char_to_draw)
+                
+            if player_coords == exit_coords:
+                print("You're winner!")
+                break
 
             Map.draw_map(tile_matrix, player_coords, char_to_draw, dimension, background_tile, npc_array)
             pygame.display.update() # draw DISPLAYSURF to the screen.
