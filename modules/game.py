@@ -6,6 +6,7 @@ from .screen import Screen
 from .map import Map
 from .strings import Common
 from .ai import Npc
+from enums.direction import Direction
 
 class Game:
     """ Game common utilities """
@@ -83,13 +84,13 @@ class Game:
         """Change tile due to new orientation"""
         char_to_draw = original_orientation_img
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            char_to_draw = Tiles.default_player['left']
+            char_to_draw = Tiles.default_player[Direction.WEST.name]
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            char_to_draw = Tiles.default_player['right']
+            char_to_draw = Tiles.default_player[Direction.EAST.name]
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
-            char_to_draw = Tiles.default_player['up']
+            char_to_draw = Tiles.default_player[Direction.NORTH.name]
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            char_to_draw = Tiles.default_player['down']
+            char_to_draw = Tiles.default_player[Direction.SOUTH.name]
         return char_to_draw
 
     @staticmethod

@@ -88,8 +88,8 @@ class Map:
         # to print npc in the correct place we convert the coords they have in the array with the screen coordinates
         # (screen is always a subset of the map).
         for npc in npc_array:
-            if npc.x in rendered_array_width and npc.y in rendered_array_height:
-                render_coordinate = Map.arr_coord_to_render_coord(npc.x, npc.y, rendered_array_width, rendered_array_height)
+            if npc.x_coord in rendered_array_width and npc.y_coord in rendered_array_height:
+                render_coordinate = Map.arr_coord_to_render_coord(npc.x_coord, npc.y_coord, rendered_array_width, rendered_array_height)
                 Screen.DISPLAYSURF.blit(npc.current_tile, (render_coordinate[0] * Screen.TILESIDE, render_coordinate[1] * Screen.TILESIDE))
 
     @staticmethod
@@ -123,22 +123,12 @@ class Map:
     def set_char_start_orientation(file_path):
         """ Read from map file player initial direction and return image """
         direction = None
-        image = None
         with open(file_path, "r") as ins:
             for line in ins:
                 if line.startswith("DIRECTION"):
                     direction = line.split('=', 1)[-1].strip()
 
-        if direction == "N":
-            image = Tiles.default_player['up']
-        elif direction == "S":
-            image = Tiles.default_player['down']
-        elif direction == "W":
-            image = Tiles.default_player['left']
-        elif direction == "E":
-            image = Tiles.default_player['right']
-
-        return image
+        return Tiles.default_player[direction]
 
     @staticmethod
     def set_background(file_path):
