@@ -1,0 +1,20 @@
+DIRECTION = WEST
+BACKGROUND = mountains
+*
+#################TTTTTTTTTTTTTTTTTTTTT  TTTTTTTT
+#  X            #######TTTTTT    TTT        TTTT
+#   KK         K      ##TTTTTTT    K     TTTTTTT
+#                      #########################
+#                          K                  ##
+#       K     K     ############              ##
+##########         ##          #         K    ##
+#TWWTTTTT#                     ###        KK  ##
+#TTWWTTTT##             K                     ##
+#TTTWWTTT#       #        ###########         ##
+##########        #########TTTTTTTTT#         ##
+#                K     K  #TTTTTTTTT#         ##
+#     K            K      #TTTTTTTTT#     KK  ##
+#        ##       ###     #TTTTTTTTT#         ##
+#        ##        ##   ###TTTTTTTTT#     S   ##
+#    K              #####TTTTTTTTTTT#         ##
+#####################TTTTTTTTTTTTTTT############
