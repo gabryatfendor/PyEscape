@@ -1,56 +1,13 @@
 """ Module containing methods related to map creation/import/conversion """
 
-import random
-
 from .screen import Screen
-from .graphics import Color, Tiles
+from .graphics import Color
 
 class Map:
     """ Everything regarding the game map """
 
     @staticmethod
-    def import_map(file_path):
-        """ Importing map from file line by line """
-        array_to_return = []
-        map_started = False
-        with open(file_path, "r") as ins:
-            line_array = []
-            for line in ins:
-                if map_started:
-                    line_array.append(line)
-                if line == "*\n":
-                    map_started = True
-
-        for line in line_array:
-            array_to_return.append(line[:-1])
-        return list(zip(*array_to_return))
-
-    @staticmethod
-    def convert_map_to_tile(map_array):
-        """ Convert every single char from the configuration in the path to the tile to be drawn """
-        tile_array = []
-        tile_column = []
-        for column in map_array:
-            for char in column:
-                if char == ' ' or char == 'K' or char == 'S':
-                    tile_column.append(Tiles.environment['grass'])
-                elif char == 'W':
-                    tile_column.append(random.choice(Tiles.environment['water']))
-                elif char == 'T':
-                    tile_column.append(random.choice(Tiles.environment['tree']))
-                elif char == '#':
-                    tile_column.append(Tiles.environment['wall'])
-                elif char == '-':
-                    tile_column.append(Tiles.environment['nothing'])
-                elif char == 'X':
-                    tile_column.append(Tiles.environment['exit'])
-            tile_array.append(tile_column)
-            tile_column = []
-
-        return tile_array
-
-    @staticmethod
-    def draw_map(tile_array, player_coords, char_img, map_dimension, outside_tile, npc_array):
+    def draw_map(level, char_img):
         """ Map rendering from imported file """
         column_to_draw = []
         map_to_draw = []
@@ -59,16 +16,16 @@ class Map:
         max_y = Screen.MAXYTILE
         extra_space = Screen.EXTRATILES
 
-        rendered_array_width = range(int(player_coords[0])-int((max_x/2)), int(player_coords[0])+int((max_x//2))+extra_space)
-        rendered_array_height = range(int(player_coords[1])-int((max_y/2)), int(player_coords[1])+int((max_y//2))+extra_space)
+        rendered_array_width = range(int(level.player_coords[0])-int((max_x/2)), int(level.player_coords[0])+int((max_x//2))+extra_space)
+        rendered_array_height = range(int(level.player_coords[1])-int((max_y/2)), int(level.player_coords[1])+int((max_y//2))+extra_space)
         # using as center player coordinates (since player is always drawn in the center) we draw only data from the array
         for i in rendered_array_width:
             for j in rendered_array_height:
                 # up to max_x or max_y. If we have any index values that goes negative or over the limit, we print background
-                if i < 0 or j < 0 or i > map_dimension[1]-1 or j > map_dimension[0]-1:
-                    column_to_draw.append(outside_tile) # Out of map bound
+                if i < 0 or j < 0 or i > level.dimension[1]-1 or j > level.dimension[0]-1:
+                    column_to_draw.append(level.tile_background) # Out of map bound
                 else:
-                    column_to_draw.append(tile_array[i][j])
+                    column_to_draw.append(level.tile_map[i][j])
             map_to_draw.append(column_to_draw)
             column_to_draw = []
         row = 0
@@ -87,7 +44,7 @@ class Map:
 
         # to print npc in the correct place we convert the coords they have in the array with the screen coordinates
         # (screen is always a subset of the map).
-        for npc in npc_array:
+        for npc in level.npc_array:
             if npc.x_coord in rendered_array_width and npc.y_coord in rendered_array_height:
                 render_coordinate = Map.arr_coord_to_render_coord(npc.x_coord, npc.y_coord, rendered_array_width, rendered_array_height)
                 Screen.DISPLAYSURF.blit(npc.current_tile, (render_coordinate[0] * Screen.TILESIDE, render_coordinate[1] * Screen.TILESIDE))
@@ -105,43 +62,3 @@ class Map:
                 y_rendered = idx
 
         return [x_rendered, y_rendered]
-
-    @staticmethod
-    def set_char_start_orientation(file_path):
-        """ Read from map file player initial direction and return image """
-        direction = None
-        with open(file_path, "r") as ins:
-            for line in ins:
-                if line.startswith("DIRECTION"):
-                    direction = line.split('=', 1)[-1].strip()
-
-        return Tiles.default_player[direction]
-
-    @staticmethod
-    def set_background(file_path):
-        """ Read from map file background tile """
-        background_string = None
-        image = None
-        with open(file_path, "r") as ins:
-            for line in ins:
-                if line.startswith("BACKGROUND"):
-                    background_string = line.split('=', 1)[-1].strip()
-
-        image = Tiles.environment[background_string]
-        return image
-
-    @staticmethod
-    def draw_walk_map(map_array):
-        """ Write the walkability map to be used when we move the char directly from the array map imported from the file (nothing dynamic in it) """
-        map_to_return = []
-        column_to_append = []
-        for column in map_array:
-            for char in column:
-                if char == ' ' or char == 'X' or char == '-':
-                    column_to_append.append(True)
-                else:
-                    column_to_append.append(False)
-            map_to_return.append(column_to_append)
-            column_to_append = []
-
-        return map_to_return

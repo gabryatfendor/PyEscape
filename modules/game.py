@@ -1,20 +1,25 @@
 """ Game common properties """
+import os
 import sys
 import pygame
+
 from enums.direction import Direction
 from .graphics import Color, Tiles
 from .screen import Screen
 from .map import Map
 from .strings import Common
 from .ai import Npc
+from .level import Level
 
 class Game:
     """ Game common utilities """
     FPS = 60  # frames per second to update the screen
     PLAYER_MOVE_SPEED = int(FPS * 2)
+    LEVEL_LIST = []
 
-    def main_loop(self, walk_matrix, player_coords, tile_matrix, dimension, npc_array, exit_coords):
+    def main_loop(self, level):
         """ Main game loop """
+        print("Entering level {}".format(level.level_path))
         clock = pygame.time.Clock()
         npc_move_event = pygame.USEREVENT + 1
         player_move_event = pygame.USEREVENT + 2
@@ -22,10 +27,9 @@ class Game:
         pygame.time.set_timer(player_move_event, Game.PLAYER_MOVE_SPEED)
 
         #write char first time
-        background_tile = Map.set_background("maps/lvl_01.map")
-        char_to_draw = Map.set_char_start_orientation("maps/lvl_01.map")
+        char_to_draw = Tiles.default_player[level.player_direction]
         #player position is non walkable
-        walk_matrix[player_coords[0]][player_coords[1]] = False
+        level.walkability_map[level.player_coords[0]][level.player_coords[1]] = False
 
         while True:
             clock.tick(self.FPS)
@@ -39,23 +43,21 @@ class Game:
 
             for event in pygame.event.get(): # event handling loop
                 if event.type == npc_move_event:
-                    updated_npc_map = Npc.move_npc(npc_array, walk_matrix)
-                    npc_array = updated_npc_map[0]
-                    walk_matrix = updated_npc_map[1]
+                    updated_npc_map = Npc.move_npc(level.npc_array, level.walkability_map)
+                    level.npc_array = updated_npc_map[0]
+                    level.walkability_map = updated_npc_map[1]
                 if event.type == player_move_event:
-                    updated_player_map = Game.move_player(keys, player_coords, walk_matrix)
-                    player_coords = updated_player_map[0]
-                    walk_matrix = updated_player_map[1]
+                    updated_player_map = Game.move_player(keys, level.player_coords, level.walkability_map)
+                    level.player_coords = updated_player_map[0]
+                    level.walkability_map = updated_player_map[1]
                     char_to_draw = Game.change_orientation_tile(keys, char_to_draw)
 
-            if player_coords == exit_coords:
-                print("You're winner!")
+            if level.player_coords == level.exit_coords:
+                print("You conquered level {}".format(level.level_path))
                 break
 
-            Map.draw_map(tile_matrix, player_coords, char_to_draw, dimension, background_tile, npc_array)
+            Map.draw_map(level, char_to_draw)
             pygame.display.update() # draw DISPLAYSURF to the screen.
-
-        Game.terminate()
 
     @staticmethod
     def move_player(keys, player_coords, walk_matrix):
@@ -96,6 +98,15 @@ class Game:
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
             char_to_draw = Tiles.default_player[Direction.SOUTH.name]
         return char_to_draw
+
+    @staticmethod
+    def load_level_list(level_directory):
+        """Load all .map files in level_directory"""
+        level_list = []
+        for level_path in sorted(os.listdir(level_directory)):
+            current_level = Level(level_directory + level_path, Direction.SOUTH.name, 'mountains')
+            level_list.append(current_level)
+        return level_list
 
     @staticmethod
     def terminate():
