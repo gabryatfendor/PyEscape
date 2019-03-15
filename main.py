@@ -7,7 +7,7 @@ from modules.map import Map
 from modules.ai import Npc
 
 def main():
-    """ Main method containing initialization and game loop (maybe split it?)"""
+    """ Main method containing initialization and game loop"""
     # Pygame initialization
     pygame.init()
     Screen.DISPLAYSURF.fill(Color.WHITE)
@@ -20,8 +20,9 @@ def main():
 
     array_map = Map.import_map("maps/lvl_01.map")
     map_dimension = [len(array_map[0]), len(array_map)]
-    print("Map loaded, dimension {}".format(map_dimension))
-    player_coord = Map.set_char_start("maps/lvl_01.map")
+    player_coord = [x for x in array_map if 'S' in x][0]
+    player_coord = [array_map.index(player_coord), player_coord.index('S')]
+    print("Map loaded, dimension {} and player_coords {}".format(map_dimension, player_coord))
     npc_array = []
     for idx, i in enumerate(array_map):
         for jdx, j in enumerate(i):

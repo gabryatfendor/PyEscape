@@ -47,7 +47,7 @@ class Game:
                     player_coords = updated_player_map[0]
                     walk_matrix = updated_player_map[1]
                     char_to_draw = Game.change_orientation_tile(keys, char_to_draw)
-                
+
             if player_coords == exit_coords:
                 print("You're winner!")
                 break

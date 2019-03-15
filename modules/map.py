@@ -32,7 +32,7 @@ class Map:
         tile_column = []
         for column in map_array:
             for char in column:
-                if char == ' ' or char == 'K':
+                if char == ' ' or char == 'K' or char == 'S':
                     tile_column.append(Tiles.environment['grass'])
                 elif char == 'W':
                     tile_column.append(random.choice(Tiles.environment['water']))
@@ -107,19 +107,6 @@ class Map:
         return [x_rendered, y_rendered]
 
     @staticmethod
-    def set_char_start(file_path):
-        """ Read the player starting point from the map file and set the starting coordinate """
-        start = None
-        with open(file_path, "r") as ins:
-            for line in ins:
-                if line.startswith("START"):
-                    start = line.split('=', 1)[-1].strip()
-
-        player_pos = [int(x) for x in start.split(',') if x.strip().isdigit()]
-
-        return player_pos
-
-    @staticmethod
     def set_char_start_orientation(file_path):
         """ Read from map file player initial direction and return image """
         direction = None
@@ -150,7 +137,7 @@ class Map:
         column_to_append = []
         for column in map_array:
             for char in column:
-                if char == ' ' or char == 'X':
+                if char == ' ' or char == 'X' or char == '-':
                     column_to_append.append(True)
                 else:
                     column_to_append.append(False)
