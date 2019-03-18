@@ -19,7 +19,7 @@ class Game:
 
     def main_loop(self, level):
         """ Main game loop """
-        print("Entering level {}".format(level.level_path))
+        print("Entering \"{}\"".format(level.name))
         clock = pygame.time.Clock()
         npc_move_event = pygame.USEREVENT + 1
         player_move_event = pygame.USEREVENT + 2
@@ -53,7 +53,7 @@ class Game:
                     char_to_draw = Game.change_orientation_tile(keys, char_to_draw)
 
             if level.player_coords == level.exit_coords:
-                print("You conquered level {}".format(level.level_path))
+                print("You escaped \"{}\"".format(level.name))
                 break
 
             Map.draw_map(level, char_to_draw)
@@ -105,6 +105,7 @@ class Game:
         level_list = []
         for level_path in sorted(os.listdir(level_directory)):
             current_level = Level(level_directory + level_path, Direction.SOUTH.name, 'mountains')
+            current_level.name = Level.set_level_name(os.path.splitext(level_path)[0])
             level_list.append(current_level)
         return level_list
 
@@ -116,7 +117,9 @@ class Game:
 
 class Menu:
     """ Main game menu """
-    def main_menu(self):
+
+    @staticmethod
+    def main_menu():
         """ Menu printed before starting the game """
         #  Title variables
         font_title = pygame.font.Font('freesansbold.ttf', 32)
@@ -142,7 +145,7 @@ class Menu:
                         Screen.DISPLAYSURF.fill(Color.WHITE)
                         return
                     elif event.key == pygame.K_h:
-                        self.help_menu()
+                        Menu.help_menu()
                     elif event.key == pygame.K_ESCAPE:
                         Game.terminate()
                     if not has_menu_appeared:
@@ -150,7 +153,8 @@ class Menu:
 
             pygame.display.update()
 
-    def help_menu(self):
+    @staticmethod
+    def help_menu():
         """ Screen that appears whenever help is triggered """
         font_obj = pygame.font.Font('freesansbold.ttf', 18)
         text_surface_obj = font_obj.render(Common.menu_help_body_line1, True, Color.BLACK, Color.WHITE)

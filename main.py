@@ -8,14 +8,14 @@ def main():
     """ Main method containing initialization and game loop"""
     # Pygame initialization
     pygame.init()
+
     Screen.DISPLAYSURF.fill(Color.WHITE)
-    game_object = Game()
-    main_menu = Menu()
     pygame.display.set_caption('PyRPG')
 
     # Draw the main menu
-    main_menu.main_menu()
+    Menu.main_menu()
 
+    game_object = Game()
     game_object.LEVEL_LIST = Game.load_level_list("maps/")
 
     for level in game_object.LEVEL_LIST:

@@ -95,3 +95,11 @@ class Level:
                     new_npc = Npc(idx, jdx, Tiles.knight)
                     npc_array.append(new_npc)
         return npc_array
+
+    @staticmethod
+    def set_level_name(level_path):
+        """level name is after _ in file name"""
+        full_path = level_path
+        full_path = ''.join([i for i in full_path if not i.isdigit()]).replace("_", "")
+        print(full_path)
+        return full_path
