@@ -4,7 +4,7 @@ import sys
 import pygame
 
 from enums.direction import Direction
-from .graphics import Color, Tiles
+from .graphics import Color, Tiles, Images
 from .screen import Screen
 from .map import Map
 from .strings import Common
@@ -15,17 +15,34 @@ class Game:
     """ Game common utilities """
     FPS = 60  # frames per second to update the screen
     PLAYER_MOVE_SPEED = int(FPS * 2)
-    LEVEL_LIST = []
+    level_list = []
 
-    def main_loop(self, level):
+    def game_setup(self):
+        """Method to recall the game if game_over or win"""
+        self.level_list = Game.load_level_list("maps/")
+        levels_won = 0
+
+        for level in self.level_list:
+            current_level_won = self.main_loop(level, int(Game.FPS * 5))
+            if current_level_won:
+                levels_won += 1
+            else:
+                break
+
+        if levels_won == len(self.level_list):
+            Game.youre_winner()
+        else:
+            Game.game_over()
+
+    def main_loop(self, level, enemy_speed):
         """ Main game loop """
-        game_over = False
+        game_won = True
         print("Entering \"{}\"".format(level.name))
         clock = pygame.time.Clock()
         npc_move_event = pygame.USEREVENT + 1
         player_move_event = pygame.USEREVENT + 2
 
-        pygame.time.set_timer(npc_move_event, Npc.NPC_MOVE_SPEED)
+        pygame.time.set_timer(npc_move_event, enemy_speed)
         pygame.time.set_timer(player_move_event, Game.PLAYER_MOVE_SPEED)
 
         #write char first time
@@ -49,16 +66,16 @@ class Game:
 
             for npc in level.npc_array:
                 if npc.check_collision(level):
-                    Game.game_over()
-                    game_over = True
-                    return game_over
+                    game_won = False
+                    return game_won
             if level.player_coords == level.exit_coords:
                 print("You escaped \"{}\"".format(level.name))
                 break
 
             Map.draw_map(level, char_to_draw)
             pygame.display.update() # draw DISPLAYSURF to the screen.
-        return game_over
+
+        return game_won
 
     @staticmethod
     def move_player(keys, player_coords, walk_matrix):
@@ -105,7 +122,29 @@ class Game:
     @staticmethod
     def game_over():
         """Handling death"""
-        print("GAME OVER BITCH")
+        while True:
+            Screen.DISPLAYSURF.fill(Color.BLACK)
+            Screen.DISPLAYSURF.blit(Images.image_game_over, (0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    return
+                if event.type == pygame.QUIT:
+                    Game.terminate()
+
+            pygame.display.update()
+
+    @staticmethod
+    def youre_winner():
+        """Handling winning"""
+        while True:
+            Screen.DISPLAYSURF.fill(Color.BLACK)
+            Screen.DISPLAYSURF.blit(Images.image_winner, (0, 0))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or  event.type == pygame.KEYDOWN:
+                    Game.terminate()
+
+            pygame.display.update()
+
 
     @staticmethod
     def terminate():
@@ -149,6 +188,8 @@ class Menu:
                         Game.terminate()
                     if not has_menu_appeared:
                         has_menu_appeared = True
+                if event.type == pygame.QUIT:
+                    Game.terminate()
 
             pygame.display.update()
 

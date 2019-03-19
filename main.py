@@ -14,22 +14,19 @@ def main():
 
     # Draw the main menu
     Menu.main_menu()
+    replay = True
 
-    game_object = Game()
-    game_object.LEVEL_LIST = Game.load_level_list("maps/")
-    levels_won = 0
-
-    for level in game_object.LEVEL_LIST:
-        game_over = game_object.main_loop(level)
-        if game_over:
-            break
-        else:
-            levels_won += 1
-
-    if levels_won == len(game_object.LEVEL_LIST):
-        print("You're winner!")
-    else:
-        main()
+    while replay:
+        game_object = Game()
+        game_object.game_setup()
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_y:
+                    pass
+                elif event.key == pygame.K_n:
+                    replay = False
+                    break
 
 if __name__ == '__main__':
     main()

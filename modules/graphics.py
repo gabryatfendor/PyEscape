@@ -34,4 +34,9 @@ class Tiles:
     knight = {Direction.WEST.name: pygame.transform.scale(pygame.image.load('tiles/npc/knight_west.png'), default),
               Direction.EAST.name: pygame.transform.scale(pygame.image.load('tiles/npc/knight_east.png'), default),
               Direction.NORTH.name: pygame.transform.scale(pygame.image.load('tiles/npc/knight_north.png'), default),
-              Direction.SOUTH.name: pygame.transform.scale(pygame.image.load('tiles/npc/knight_south.png'), default)}   
+              Direction.SOUTH.name: pygame.transform.scale(pygame.image.load('tiles/npc/knight_south.png'), default)}
+
+class Images:
+    """Iamges used in game"""
+    image_game_over = pygame.image.load("images/game_over.png")
+    image_winner = pygame.image.load("images/winner.jpg")
