@@ -17,9 +17,19 @@ def main():
 
     game_object = Game()
     game_object.LEVEL_LIST = Game.load_level_list("maps/")
+    levels_won = 0
 
     for level in game_object.LEVEL_LIST:
-        game_object.main_loop(level)
+        game_over = game_object.main_loop(level)
+        if game_over:
+            break
+        else:
+            levels_won += 1
+
+    if levels_won == len(game_object.LEVEL_LIST):
+        print("You're winner!")
+    else:
+        main()
 
 if __name__ == '__main__':
     main()

@@ -22,22 +22,21 @@ class Npc:
             npc.current_tile = npc.tile_array[direction.name]
             if direction.name == Direction.NORTH.name:
                 if walk_matrix[npc.x_coord][npc.y_coord-1]:
-                    walk_matrix[npc.x_coord][npc.y_coord] = True
-                    walk_matrix[npc.x_coord][npc.y_coord-1] = False
                     npc.y_coord -= 1
             elif direction.name == Direction.EAST.name:
                 if walk_matrix[npc.x_coord+1][npc.y_coord]:
-                    walk_matrix[npc.x_coord][npc.y_coord] = True
-                    walk_matrix[npc.x_coord+1][npc.y_coord] = False
                     npc.x_coord += 1
             elif direction.name == Direction.SOUTH.name:
                 if walk_matrix[npc.x_coord][npc.y_coord+1]:
-                    walk_matrix[npc.x_coord][npc.y_coord] = True
-                    walk_matrix[npc.x_coord][npc.y_coord+1] = False
                     npc.y_coord += 1
             elif direction.name == Direction.WEST.name:
                 if walk_matrix[npc.x_coord-1][npc.y_coord]:
-                    walk_matrix[npc.x_coord][npc.y_coord] = True
-                    walk_matrix[npc.x_coord-1][npc.y_coord] = False
                     npc.x_coord -= 1
-        return [npc_array, walk_matrix]
+        return npc_array
+
+    def check_collision(self, level):
+        """If NPC is on the same spot of player at any time, game over!"""
+        collided = False
+        if self.x_coord == level.player_coords[0] and self.y_coord == level.player_coords[1]:
+            collided = True
+        return collided

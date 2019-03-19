@@ -41,7 +41,7 @@ class Level:
         column_to_append = []
         for column in map_array:
             for char in column:
-                if char == ' ' or char == 'X' or char == '-':
+                if char == ' ' or char == 'X' or char == '-' or char == 'K' or char == 'S':
                     column_to_append.append(True)
                 else:
                     column_to_append.append(False)
@@ -101,5 +101,4 @@ class Level:
         """level name is after _ in file name"""
         full_path = level_path
         full_path = ''.join([i for i in full_path if not i.isdigit()]).replace("_", "")
-        print(full_path)
         return full_path

@@ -19,45 +19,46 @@ class Game:
 
     def main_loop(self, level):
         """ Main game loop """
+        game_over = False
         print("Entering \"{}\"".format(level.name))
         clock = pygame.time.Clock()
         npc_move_event = pygame.USEREVENT + 1
         player_move_event = pygame.USEREVENT + 2
+
         pygame.time.set_timer(npc_move_event, Npc.NPC_MOVE_SPEED)
         pygame.time.set_timer(player_move_event, Game.PLAYER_MOVE_SPEED)
 
         #write char first time
         char_to_draw = Tiles.default_player[level.player_direction]
-        #player position is non walkable
-        level.walkability_map[level.player_coords[0]][level.player_coords[1]] = False
 
         while True:
             clock.tick(self.FPS)
 
-            if pygame.event.get(pygame.QUIT):
-                break
-
             keys = pygame.key.get_pressed()
             if keys[pygame.K_ESCAPE]:
-                break
+                Game.terminate()
 
             for event in pygame.event.get(): # event handling loop
                 if event.type == npc_move_event:
-                    updated_npc_map = Npc.move_npc(level.npc_array, level.walkability_map)
-                    level.npc_array = updated_npc_map[0]
-                    level.walkability_map = updated_npc_map[1]
+                    level.npc_array = Npc.move_npc(level.npc_array, level.walkability_map)
                 if event.type == player_move_event:
-                    updated_player_map = Game.move_player(keys, level.player_coords, level.walkability_map)
-                    level.player_coords = updated_player_map[0]
-                    level.walkability_map = updated_player_map[1]
+                    level.player_coords = Game.move_player(keys, level.player_coords, level.walkability_map)
                     char_to_draw = Game.change_orientation_tile(keys, char_to_draw)
+                if event.type == pygame.QUIT:
+                    Game.terminate()
 
+            for npc in level.npc_array:
+                if npc.check_collision(level):
+                    Game.game_over()
+                    game_over = True
+                    return game_over
             if level.player_coords == level.exit_coords:
                 print("You escaped \"{}\"".format(level.name))
                 break
 
             Map.draw_map(level, char_to_draw)
             pygame.display.update() # draw DISPLAYSURF to the screen.
+        return game_over
 
     @staticmethod
     def move_player(keys, player_coords, walk_matrix):
@@ -65,25 +66,17 @@ class Game:
         new_player_coords = player_coords
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             if walk_matrix[player_coords[0]-1][player_coords[1]]:
-                walk_matrix[player_coords[0]][player_coords[1]] = True
-                walk_matrix[player_coords[0]-1][player_coords[1]] = False
                 new_player_coords[0] -= 1
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             if walk_matrix[player_coords[0]+1][player_coords[1]]:
-                walk_matrix[player_coords[0]][player_coords[1]] = True
-                walk_matrix[player_coords[0]+1][player_coords[1]] = False
                 new_player_coords[0] += 1
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
             if walk_matrix[player_coords[0]][player_coords[1]-1]:
-                walk_matrix[player_coords[0]][player_coords[1]] = True
-                walk_matrix[player_coords[0]][player_coords[1]-1] = False
                 new_player_coords[1] -= 1
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
             if walk_matrix[player_coords[0]][player_coords[1]+1]:
-                walk_matrix[player_coords[0]][player_coords[1]] = True
-                walk_matrix[player_coords[0]][player_coords[1]+1] = False
                 new_player_coords[1] += 1
-        return [new_player_coords, walk_matrix]
+        return new_player_coords
 
     @staticmethod
     def change_orientation_tile(keys, original_orientation_img):
@@ -110,8 +103,14 @@ class Game:
         return level_list
 
     @staticmethod
+    def game_over():
+        """Handling death"""
+        print("GAME OVER BITCH")
+
+    @staticmethod
     def terminate():
         """ Exit from the game """
+        print("Quitting...")
         pygame.quit()
         sys.exit()
 
