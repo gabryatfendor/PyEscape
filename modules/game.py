@@ -131,12 +131,14 @@ class Game:
     @staticmethod
     def game_over():
         """Handling death"""
+        game_over_centered = Images.center_image(Images.image_game_over)
         while True:
             Screen.DISPLAYSURF.fill(Color.BLACK)
-            Screen.DISPLAYSURF.blit(Images.image_game_over, (0, 0))
+            Screen.DISPLAYSURF.blit(Images.image_game_over, (game_over_centered[0], game_over_centered[1]))
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    return
+                    if event.key == pygame.K_SPACE:
+                        return
                 if event.type == pygame.QUIT:
                     Game.terminate()
 
@@ -145,11 +147,13 @@ class Game:
     @staticmethod
     def youre_winner():
         """Handling winning"""
+        winner_centered = Images.center_image(Images.image_winner)
+        print(winner_centered)
         while True:
             Screen.DISPLAYSURF.fill(Color.BLACK)
-            Screen.DISPLAYSURF.blit(Images.image_winner, (0, 0))
+            Screen.DISPLAYSURF.blit(Images.image_winner, (winner_centered[0], winner_centered[1]))
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or  event.type == pygame.KEYDOWN:
+                if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
                     Game.terminate()
 
             pygame.display.update()

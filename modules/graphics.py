@@ -40,3 +40,11 @@ class Images:
     """Iamges used in game"""
     image_game_over = pygame.image.load("images/game_over.png")
     image_winner = pygame.image.load("images/winner.jpg")
+
+    @staticmethod
+    def center_image(image, screen_width=Screen.WINWIDTH, screen_height=Screen.WINHEIGHT):
+        """Return origin with centered image"""
+        image_size = image.get_rect().size
+        image_middle_x = int(image_size[0]/2)
+        image_middle_y = int(image_size[1]/2)
+        return [(int(screen_width/2)-image_middle_x), (int(screen_height/2)-image_middle_y)]
