@@ -1,5 +1,5 @@
-# PyRPG
-Tiny RPG game written with pyGame Library, more as a test than anything else
+# PyEscape
+Tiny runaway game written with pyGame Library, more as a test than anything else
 
 ## Installation
 The game is written as a test to learn Python3, just make sure to
