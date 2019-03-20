@@ -1,20 +1,19 @@
-""" Data regarding images show in games and graphic in general """
-
+"""Data regarding images show in games and graphic in general"""
 import pygame
 
 from enums.direction import Direction
 from .screen import Screen
 
 class Color:
-    """  Colors used in application from pygame library """
+    """Colors used in application from pygame library"""
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     RED = (255, 0, 0)
     BLUE = (0, 0, 128)
 
 class Tiles:
-    """ Tiles used in game """
-    default = Screen.TILESIDE, Screen.TILESIDE
+    """Tiles used in game"""
+    default = Screen.tile_side_length, Screen.tile_side_length
     default_player = {Direction.WEST.name: pygame.transform.scale(pygame.image.load('tiles/player/left.png'), default),
                       Direction.EAST.name: pygame.transform.scale(pygame.image.load('tiles/player/right.png'), default),
                       Direction.NORTH.name: pygame.transform.scale(pygame.image.load('tiles/player/up.png'), default),
@@ -42,7 +41,7 @@ class Images:
     image_winner = pygame.image.load("images/winner.jpg")
 
     @staticmethod
-    def center_image(image, screen_width=Screen.WINWIDTH, screen_height=Screen.WINHEIGHT):
+    def center_image(image, screen_width=Screen.win_width, screen_height=Screen.win_height):
         """Return origin with centered image"""
         image_size = image.get_rect().size
         image_middle_x = int(image_size[0]/2)

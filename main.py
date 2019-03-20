@@ -1,4 +1,4 @@
-""" File containing the main game loop """
+"""File containing the main game loop"""
 import pygame
 from modules.game import Game, Menu
 from modules.screen import Screen
@@ -6,21 +6,21 @@ from modules.graphics import Color
 from modules.audio import Music
 
 def main():
-    """ Main method containing initialization and game loop"""
-    # Pygame initialization
+    """Main method containing initialization and game loop"""
     pygame.init()
 
-    Screen.DISPLAYSURF.fill(Color.WHITE)
+    Screen.display_surface.fill(Color.WHITE)
     pygame.display.set_caption('PyRPG')
 
-    # Music starts
+    #Music starts
     pygame.mixer.init()
     Music.play_music(Music.background_music, True, 0.4)
 
-    # Draw the main menu
+    #Draw the main menu
     Menu.main_menu()
     replay = True
 
+    #Main Game loop
     while replay:
         game_object = Game()
         game_object.game_setup()

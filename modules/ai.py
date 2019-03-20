@@ -1,5 +1,4 @@
 """Data related to entities not controlled by the player"""
-
 import random
 from enums.direction import Direction
 
@@ -12,6 +11,13 @@ class Npc:
         self.y_coord = y
         self.tile_array = tile_array
         self.current_tile = tile_array[Direction.EAST.name]
+
+    def check_collision(self, level):
+        """If NPC is on the same spot of player at any time, game over!"""
+        collided = False
+        if self.x_coord == level.player_coords[0] and self.y_coord == level.player_coords[1]:
+            collided = True
+        return collided
 
     @staticmethod
     def move_npc(npc_array, walk_matrix):
@@ -32,10 +38,3 @@ class Npc:
                 if walk_matrix[npc.x_coord-1][npc.y_coord]:
                     npc.x_coord -= 1
         return npc_array
-
-    def check_collision(self, level):
-        """If NPC is on the same spot of player at any time, game over!"""
-        collided = False
-        if self.x_coord == level.player_coords[0] and self.y_coord == level.player_coords[1]:
-            collided = True
-        return collided

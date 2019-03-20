@@ -1,5 +1,4 @@
 """Single map properties"""
-
 import random
 
 from .graphics import Tiles
@@ -16,43 +15,29 @@ class Level:
         self.dimension = [len(self.array_map[0]), len(self.array_map)]
         self.walkability_map = Level.draw_walk_map(self.array_map)
         self.tile_map = Level.convert_map_to_tile(self.array_map)
-        self.exit_coords = self.set_exit_coords()
-        self.player_coords = self.set_player_coords()
-        self.npc_array = self.set_npc_array()
+        self.exit_coords = self.set_coords_with_char('X')
+        self.player_coords = self.set_coords_with_char('S')
+        self.npc_array = self.set_npc_array('K')
 
-    @staticmethod
-    def import_map(file_path):
-        """ Importing map from file line by line """
-        array_to_return = []
-        with open(file_path, "r") as ins:
-            line_array = []
-            for line in ins:
-                line_array.append(line)
+    def set_coords_with_char(self, char_to_search):
+        """set coordinates from char, to be searched in the map"""
+        exit_coords = [x for x in self.array_map if char_to_search in x][0]
+        exit_coords = [self.array_map.index(exit_coords), exit_coords.index(char_to_search)]
+        return exit_coords
 
-        for line in line_array:
-            array_to_return.append(line[:-1])
-
-        return list(zip(*array_to_return))
-
-    @staticmethod
-    def draw_walk_map(map_array):
-        """ Write the walkability map to be used when we move the char directly from the array map imported from the file (nothing dynamic in it) """
-        map_to_return = []
-        column_to_append = []
-        for column in map_array:
-            for char in column:
-                if char == ' ' or char == 'X' or char == '-' or char == 'K' or char == 'S':
-                    column_to_append.append(True)
-                else:
-                    column_to_append.append(False)
-            map_to_return.append(column_to_append)
-            column_to_append = []
-
-        return map_to_return
+    def set_npc_array(self, npc_char):
+        """npc_array creation"""
+        npc_array = []
+        for idx, i in enumerate(self.array_map):
+            for jdx, j in enumerate(i):
+                if j == npc_char:
+                    new_npc = Npc(idx, jdx, Tiles.knight)
+                    npc_array.append(new_npc)
+        return npc_array
 
     @staticmethod
     def convert_map_to_tile(map_array):
-        """ Convert every single char from the configuration in the path to the tile to be drawn """
+        """Convert every single char from the configuration in the path to the tile to be drawn"""
         tile_array = []
         tile_column = []
         for column in map_array:
@@ -74,27 +59,35 @@ class Level:
 
         return tile_array
 
-    def set_exit_coords(self):
-        """exit_coords setter"""
-        exit_coords = [x for x in self.array_map if 'X' in x][0]
-        exit_coords = [self.array_map.index(exit_coords), exit_coords.index('X')]
-        return exit_coords
+    @staticmethod
+    def draw_walk_map(map_array):
+        """Write the walkability map to be used when we move the char directly from the array map imported from the file (nothing dynamic in it)"""
+        map_to_return = []
+        column_to_append = []
+        for column in map_array:
+            for char in column:
+                if char == ' ' or char == 'X' or char == '-' or char == 'K' or char == 'S':
+                    column_to_append.append(True)
+                else:
+                    column_to_append.append(False)
+            map_to_return.append(column_to_append)
+            column_to_append = []
 
-    def set_player_coords(self):
-        """player_coords setter"""
-        player_coords = [x for x in self.array_map if 'S' in x][0]
-        player_coords = [self.array_map.index(player_coords), player_coords.index('S')]
-        return player_coords
+        return map_to_return
 
-    def set_npc_array(self):
-        """npc_array creation"""
-        npc_array = []
-        for idx, i in enumerate(self.array_map):
-            for jdx, j in enumerate(i):
-                if j == 'K':
-                    new_npc = Npc(idx, jdx, Tiles.knight)
-                    npc_array.append(new_npc)
-        return npc_array
+    @staticmethod
+    def import_map(file_path):
+        """Importing map from file line by line"""
+        array_to_return = []
+        with open(file_path, "r") as ins:
+            line_array = []
+            for line in ins:
+                line_array.append(line)
+
+        for line in line_array:
+            array_to_return.append(line[:-1])
+
+        return list(zip(*array_to_return))
 
     @staticmethod
     def set_level_name(level_path):

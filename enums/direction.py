@@ -1,9 +1,8 @@
-"""Enumerator handling the 4 possible directions"""
-
+"""Enumerator handling the 4 possible cardinal points"""
 from enum import Enum
 
 class Direction(Enum):
-    """Every cardinal direction is converted to a number"""
+    """Every cardinal point is converted to a number"""
     NORTH = 1
     EAST = 2
     SOUTH = 3

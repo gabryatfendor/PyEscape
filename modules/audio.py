@@ -1,5 +1,4 @@
-""" Data regarding music in game """
-
+"""Data regarding audio in game"""
 import pygame
 
 VOLUME = 1.0
