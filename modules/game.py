@@ -10,6 +10,7 @@ from .map import Map
 from .strings import Common
 from .ai import Npc
 from .level import Level
+from .audio import Sound
 
 class Game:
     """ Game common utilities """
@@ -21,9 +22,9 @@ class Game:
         """Method to recall the game if game_over or win"""
         self.level_list = Game.load_level_list("maps/")
         levels_won = 0
-
+        enemy_speed = Menu.difficulty_menu()
         for level in self.level_list:
-            current_level_won = self.main_loop(level, int(Game.FPS * 5))
+            current_level_won = self.main_loop(level, int(Game.FPS * enemy_speed))
             if current_level_won:
                 levels_won += 1
             else:
@@ -84,15 +85,23 @@ class Game:
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             if walk_matrix[player_coords[0]-1][player_coords[1]]:
                 new_player_coords[0] -= 1
+            else:
+                Sound.play_sound(Sound.sound_walk_against_wall, 0.40)
         elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             if walk_matrix[player_coords[0]+1][player_coords[1]]:
                 new_player_coords[0] += 1
+            else:
+                Sound.play_sound(Sound.sound_walk_against_wall, 0.40)
         elif keys[pygame.K_UP] or keys[pygame.K_w]:
             if walk_matrix[player_coords[0]][player_coords[1]-1]:
                 new_player_coords[1] -= 1
+            else:
+                Sound.play_sound(Sound.sound_walk_against_wall, 0.40)
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
             if walk_matrix[player_coords[0]][player_coords[1]+1]:
                 new_player_coords[1] += 1
+            else:
+                Sound.play_sound(Sound.sound_walk_against_wall, 0.40)
         return new_player_coords
 
     @staticmethod
@@ -220,5 +229,36 @@ class Menu:
                     if event.key == pygame.K_ESCAPE:
                         Screen.DISPLAYSURF.fill(Color.WHITE)
                         return
+
+            pygame.display.update()
+
+    @staticmethod
+    def difficulty_menu():
+        """ Menu printed to choose difficulty """
+
+        #  Subtitle variables
+        font_subtitle = pygame.font.Font('freesansbold.ttf', 18)
+        surface_subtitle = font_subtitle.render(Common.menu_difficulty, True, Color.BLUE, Color.WHITE)
+        rect_subtitle = surface_subtitle.get_rect()
+        rect_subtitle.center = (Screen.CENTERX, 120)
+
+        while True:  # the main menu loop
+            Screen.DISPLAYSURF.fill(Color.WHITE)
+            Screen.DISPLAYSURF.blit(surface_subtitle, rect_subtitle)
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        return 25
+                    elif event.key == pygame.K_2:
+                        return 20
+                    elif event.key == pygame.K_3:
+                        return 15
+                    elif event.key == pygame.K_4:
+                        return 10
+                    elif event.key == pygame.K_5:
+                        return 5
+                if event.type == pygame.QUIT:
+                    Game.terminate()
 
             pygame.display.update()

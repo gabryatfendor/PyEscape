@@ -6,3 +6,4 @@ class Common:
     menu_help_exit = "Press esc to go back in main menu"
     menu_help_body_line1 = "The goal of this game is really simple: just reach the exit without touching or being touched by the enemy."
     menu_help_body_line2 = "Use the arrows or WASD to move around!"
+    menu_difficulty = "Choose difficulty from 1 (easier) to 5 (hardest)"

@@ -7,3 +7,4 @@ install pygame library via Pip (pip3 install pygame).
 
 ## Extra credits
 Tiles credit to Kenney, www.kenney.nl (you can find their license in tiles dir)
+Music courtesy of www.zapsplat.com and freemusicarchive.org

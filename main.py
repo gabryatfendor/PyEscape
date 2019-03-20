@@ -3,6 +3,7 @@ import pygame
 from modules.game import Game, Menu
 from modules.screen import Screen
 from modules.graphics import Color
+from modules.audio import Music
 
 def main():
     """ Main method containing initialization and game loop"""
@@ -11,6 +12,10 @@ def main():
 
     Screen.DISPLAYSURF.fill(Color.WHITE)
     pygame.display.set_caption('PyRPG')
+
+    # Music starts
+    pygame.mixer.init()
+    Music.play_music(Music.background_music, True, 0.4)
 
     # Draw the main menu
     Menu.main_menu()
